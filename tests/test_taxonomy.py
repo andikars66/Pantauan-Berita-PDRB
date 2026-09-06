@@ -1,7 +1,9 @@
 import pandas as pd
 import pytest
 
-from src.config_loader import ConfigError, descendants, expand_selection, validate_taxonomy
+from src.config_loader import (
+    ConfigError, descendants, expand_selection, update_hierarchical_selection, validate_taxonomy,
+)
 
 
 def test_complete_taxonomy_and_official_order(config):
@@ -25,6 +27,17 @@ def test_parent_expands_all_descendants_without_duplicates(config):
 
 def test_single_child_does_not_expand_siblings(config):
     assert expand_selection(["LU.A.1.a"], config.taxonomy) == ["LU.A.1.a"]
+
+
+def test_parent_checkbox_selects_descendants_and_child_clear_releases_parent(config):
+    selected = update_hierarchical_selection([], "LU.A.1", True, config.taxonomy)
+    assert selected == [
+        "LU.A.1", "LU.A.1.a", "LU.A.1.b", "LU.A.1.c", "LU.A.1.d", "LU.A.1.e",
+    ]
+    selected = update_hierarchical_selection(selected, "LU.A.1.a", False, config.taxonomy)
+    assert "LU.A.1" not in selected
+    assert "LU.A.1.a" not in selected
+    assert "LU.A.1.b" in selected
 
 
 def test_invalid_parent_is_detected():

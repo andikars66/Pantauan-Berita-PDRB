@@ -164,6 +164,28 @@ def expand_selection(selected: list[str], taxonomy: pd.DataFrame) -> list[str]:
     return sorted(expanded, key=order.__getitem__)
 
 
+def update_hierarchical_selection(
+    selected: list[str], code: str, checked: bool, taxonomy: pd.DataFrame,
+) -> list[str]:
+    """Apply one checkbox change while keeping parent/descendant semantics intuitive."""
+    valid = set(taxonomy.loc[taxonomy["selectable"], "taxonomy_code"])
+    if code not in valid:
+        raise ValueError(f"Taxonomy pilihan tidak valid: {code}")
+    updated = set(selected) & valid
+    branch = {code, *descendants(code, taxonomy)}
+    if checked:
+        updated.update(branch)
+    else:
+        updated.difference_update(branch)
+        parent_by_code = dict(zip(taxonomy["taxonomy_code"], taxonomy["parent_code"]))
+        ancestor = parent_by_code.get(code, "")
+        while ancestor:
+            updated.discard(ancestor)
+            ancestor = parent_by_code.get(ancestor, "")
+    order = dict(zip(taxonomy["taxonomy_code"], taxonomy["sort_order"]))
+    return sorted(updated, key=order.__getitem__)
+
+
 def query_targets(selected: list[str], taxonomy: pd.DataFrame) -> list[str]:
     """Expand parents to deepest selectable descendants for efficient Serper queries."""
     targets: set[str] = set()
