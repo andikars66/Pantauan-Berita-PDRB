@@ -1,0 +1,273 @@
+taxonomy_code,keyword_type,keyword,weight,match_mode,serper_query
+LU.A,include,sektor pertanian,3,phrase,true
+LU.A,positive,produksi pertanian meningkat,3,phrase,false
+LU.A,negative,produksi pertanian menurun,3,phrase,false
+LU.A.1,include,usaha pertanian,3,phrase,true
+LU.A.1.a,include,produksi padi,3,phrase,true
+LU.A.1.a,include,gagal panen,4,phrase,true
+LU.A.1.a,include,lahan sawah,3,phrase,true
+LU.A.1.a,positive,panen raya,4,phrase,false
+LU.A.1.a,positive,produksi padi meningkat,3,phrase,false
+LU.A.1.a,negative,gagal panen,4,phrase,false
+LU.A.1.a,negative,produksi padi turun,3,phrase,false
+LU.A.1.b,include,produksi hortikultura,3,phrase,true
+LU.A.1.b,include,petani sayur,3,phrase,true
+LU.A.1.b,include,panen cabai,3,phrase,true
+LU.A.1.b,positive,panen melimpah,3,phrase,false
+LU.A.1.b,negative,gagal panen,3,phrase,false
+LU.A.1.c,include,produksi perkebunan,3,phrase,true
+LU.A.1.c,include,perkebunan tembakau,3,phrase,true
+LU.A.1.c,include,petani kopi,3,phrase,true
+LU.A.1.c,positive,produksi meningkat,2,phrase,false
+LU.A.1.c,negative,produksi menurun,2,phrase,false
+LU.A.1.d,include,populasi ternak,3,phrase,true
+LU.A.1.d,include,peternak sapi,3,phrase,true
+LU.A.1.d,include,peternakan ayam,3,phrase,true
+LU.A.1.d,positive,populasi meningkat,3,phrase,false
+LU.A.1.d,negative,wabah ternak,4,phrase,false
+LU.A.1.e,include,jasa pertanian,3,phrase,true
+LU.A.1.e,include,penyewaan alat pertanian,3,phrase,true
+LU.A.2,include,produksi kayu,3,phrase,true
+LU.A.2,include,penebangan kayu,3,phrase,true
+LU.A.2,exclude,pembalakan liar,4,phrase,false
+LU.A.2,positive,produksi kayu meningkat,3,phrase,false
+LU.A.2,negative,produksi kayu turun,3,phrase,false
+LU.A.3,include,produksi perikanan,3,phrase,true
+LU.A.3,include,hasil tangkapan ikan,3,phrase,true
+LU.A.3,include,budidaya ikan,3,phrase,true
+LU.A.3,positive,hasil tangkapan meningkat,3,phrase,false
+LU.A.3,negative,hasil tangkapan menurun,3,phrase,false
+LU.B,include,sektor pertambangan,3,phrase,true
+LU.B.1,include,produksi minyak bumi,3,phrase,true
+LU.B.1,include,panas bumi,3,phrase,true
+LU.B.1,positive,produksi migas meningkat,3,phrase,false
+LU.B.1,negative,produksi migas turun,3,phrase,false
+LU.B.2,include,produksi batubara,3,phrase,true
+LU.B.2,include,tambang lignit,3,phrase,true
+LU.B.3,include,tambang bijih logam,3,phrase,true
+LU.B.3,include,produksi bijih logam,3,phrase,true
+LU.B.4,include,usaha penggalian,3,phrase,true
+LU.B.4,include,tambang batu,3,phrase,true
+LU.B.4,include,galian pasir,3,phrase,true
+LU.C,include,industri pengolahan,3,phrase,true
+LU.C,positive,industri tumbuh,3,phrase,false
+LU.C,negative,industri terkontraksi,3,phrase,false
+LU.C.1,include,kilang minyak,3,phrase,true
+LU.C.1,include,industri pengilangan,3,phrase,true
+LU.C.2,include,industri makanan,3,phrase,true
+LU.C.2,include,industri minuman,3,phrase,true
+LU.C.2,include,pabrik makanan,3,phrase,true
+LU.C.2,positive,produksi meningkat,2,phrase,false
+LU.C.2,negative,produksi menurun,2,phrase,false
+LU.C.3,include,industri tembakau,3,phrase,true
+LU.C.3,include,pabrik rokok,3,phrase,true
+LU.C.4,include,industri tekstil,3,phrase,true
+LU.C.4,include,pabrik pakaian,3,phrase,true
+LU.C.5,include,industri kulit,3,phrase,true
+LU.C.5,include,pabrik alas kaki,3,phrase,true
+LU.C.6,include,industri kayu,3,phrase,true
+LU.C.6,include,kerajinan rotan,3,phrase,true
+LU.C.6,include,kerajinan bambu,3,phrase,true
+LU.C.7,include,industri kertas,3,phrase,true
+LU.C.7,include,usaha percetakan,3,phrase,true
+LU.C.8,include,industri farmasi,3,phrase,true
+LU.C.8,include,obat tradisional,3,phrase,true
+LU.C.9,include,industri karet,3,phrase,true
+LU.C.9,include,industri plastik,3,phrase,true
+LU.C.10,include,industri semen,3,phrase,true
+LU.C.10,include,industri keramik,3,phrase,true
+LU.C.11,include,industri logam dasar,3,phrase,true
+LU.C.11,include,pabrik baja,3,phrase,true
+LU.C.12,include,industri barang logam,3,phrase,true
+LU.C.12,include,industri elektronik,3,phrase,true
+LU.C.12,include,peralatan listrik,3,phrase,true
+LU.C.13,include,industri mesin,3,phrase,true
+LU.C.13,include,pabrik mesin,3,phrase,true
+LU.C.14,include,industri alat angkutan,3,phrase,true
+LU.C.14,include,pabrik kendaraan,3,phrase,true
+LU.C.15,include,industri furnitur,3,phrase,true
+LU.C.15,include,produksi mebel,3,phrase,true
+LU.C.16,include,jasa reparasi mesin,3,phrase,true
+LU.C.16,include,pemasangan mesin industri,3,phrase,true
+LU.D,include,pengadaan listrik dan gas,3,phrase,true
+LU.D.1,include,produksi listrik,3,phrase,true
+LU.D.1,include,pembangkit listrik,3,phrase,true
+LU.D.1,positive,pasokan listrik meningkat,3,phrase,false
+LU.D.1,negative,pemadaman listrik,3,phrase,false
+LU.D.2,include,pengadaan gas,3,phrase,true
+LU.D.2,include,produksi es,3,phrase,true
+LU.E,include,pengadaan air minum,3,phrase,true
+LU.E,include,pengelolaan sampah,3,phrase,true
+LU.E,include,pengolahan limbah,3,phrase,true
+LU.E,positive,kapasitas air meningkat,3,phrase,false
+LU.E,negative,krisis air bersih,3,phrase,false
+LU.F,include,proyek konstruksi,3,phrase,true
+LU.F,include,pembangunan gedung,3,phrase,true
+LU.F,include,pembangunan infrastruktur,3,phrase,true
+LU.F,positive,mulai dibangun,3,phrase,false
+LU.F,positive,proyek dimulai,3,phrase,false
+LU.F,negative,proyek terhenti,3,phrase,false
+LU.F,negative,pembangunan tertunda,3,phrase,false
+LU.G,include,sektor perdagangan,3,phrase,true
+LU.G.1,include,penjualan mobil,3,phrase,true
+LU.G.1,include,penjualan sepeda motor,3,phrase,true
+LU.G.1,include,bengkel kendaraan,3,phrase,true
+LU.G.1,positive,penjualan meningkat,2,phrase,false
+LU.G.1,negative,penjualan turun,2,phrase,false
+LU.G.2,include,perdagangan eceran,3,phrase,true
+LU.G.2,include,perdagangan besar,3,phrase,true
+LU.G.2,include,penjualan ritel,3,phrase,true
+LU.G.2,exclude,perdagangan manusia,5,phrase,false
+LU.G.2,positive,omzet meningkat,3,phrase,false
+LU.G.2,negative,omzet menurun,3,phrase,false
+LU.H,include,sektor transportasi,3,phrase,true
+LU.H.1,include,angkutan kereta,3,phrase,true
+LU.H.1,include,transportasi rel,3,phrase,true
+LU.H.2,include,angkutan darat,3,phrase,true
+LU.H.2,include,transportasi bus,3,phrase,true
+LU.H.2,include,angkutan barang jalan raya,3,phrase,true
+LU.H.3,include,angkutan laut,3,phrase,true
+LU.H.3,include,transportasi laut,3,phrase,true
+LU.H.4,include,angkutan penyeberangan,3,phrase,true
+LU.H.4,include,kapal feri,3,phrase,true
+LU.H.5,include,angkutan udara,3,phrase,true
+LU.H.5,include,penerbangan komersial,3,phrase,true
+LU.H.5,positive,penumpang meningkat,2,phrase,false
+LU.H.5,negative,penerbangan dibatalkan,3,phrase,false
+LU.H.6,include,jasa pergudangan,3,phrase,true
+LU.H.6,include,jasa kurir,3,phrase,true
+LU.H.6,include,aktivitas pelabuhan,3,phrase,true
+LU.I,include,sektor akomodasi dan makan minum,3,phrase,true
+LU.I.1,include,tingkat hunian hotel,4,phrase,true
+LU.I.1,include,hotel baru,3,phrase,true
+LU.I.1,include,usaha penginapan,3,phrase,true
+LU.I.1,positive,okupansi meningkat,3,phrase,false
+LU.I.1,negative,okupansi turun,3,phrase,false
+LU.I.2,include,usaha restoran,3,phrase,true
+LU.I.2,include,usaha rumah makan,3,phrase,true
+LU.I.2,include,industri kuliner,3,phrase,true
+LU.I.2,positive,omzet meningkat,2,phrase,false
+LU.I.2,negative,omzet menurun,2,phrase,false
+LU.J,include,sektor informasi dan komunikasi,3,phrase,true
+LU.J,include,layanan telekomunikasi,3,phrase,true
+LU.J,include,akses internet,3,phrase,true
+LU.J,positive,pelanggan meningkat,2,phrase,false
+LU.J,negative,gangguan jaringan,3,phrase,false
+LU.K,include,sektor jasa keuangan,3,phrase,true
+LU.K.1,include,kredit perbankan,3,phrase,true
+LU.K.1,include,penyaluran kredit bank,3,phrase,true
+LU.K.1,exclude,bank sampah,5,phrase,false
+LU.K.1,positive,kredit tumbuh,3,phrase,false
+LU.K.1,negative,kredit macet meningkat,3,phrase,false
+LU.K.2,include,premi asuransi,3,phrase,true
+LU.K.2,include,dana pensiun,3,phrase,true
+LU.K.3,include,perusahaan pembiayaan,3,phrase,true
+LU.K.3,include,pegadaian,3,token,true
+LU.K.3,include,fintech lending,3,phrase,true
+LU.K.4,include,jasa penunjang keuangan,3,phrase,true
+LU.K.4,include,pialang efek,3,phrase,true
+LU.L,include,sektor real estat,3,phrase,true
+LU.L,include,penjualan properti,3,phrase,true
+LU.L,include,persewaan properti,3,phrase,true
+LU.L,positive,penjualan properti meningkat,3,phrase,false
+LU.L,negative,penjualan properti turun,3,phrase,false
+"LU.M,N",include,jasa perusahaan,3,phrase,true
+"LU.M,N",include,jasa konsultasi bisnis,3,phrase,true
+"LU.M,N",include,persewaan alat usaha,3,phrase,true
+LU.O,include,belanja administrasi pemerintahan,3,phrase,true
+LU.O,include,jaminan sosial wajib,3,phrase,true
+LU.O,include,layanan pemerintahan,3,phrase,true
+LU.P,include,jasa pendidikan,3,phrase,true
+LU.P,include,sekolah swasta,3,phrase,true
+LU.P,include,perguruan tinggi,3,phrase,true
+LU.P,positive,jumlah siswa meningkat,3,phrase,false
+LU.P,negative,sekolah ditutup,3,phrase,false
+LU.Q,include,layanan kesehatan,3,phrase,true
+LU.Q,include,rumah sakit,3,phrase,true
+LU.Q,include,puskesmas,3,token,true
+LU.Q,positive,fasilitas kesehatan baru,3,phrase,false
+LU.Q,negative,layanan kesehatan terganggu,3,phrase,false
+"LU.R,S,T,U",include,jasa hiburan,3,phrase,true
+"LU.R,S,T,U",include,kegiatan rekreasi,3,phrase,true
+"LU.R,S,T,U",include,jasa perorangan,3,phrase,true
+EXP.1,include,konsumsi rumah tangga,4,phrase,true
+EXP.1,positive,konsumsi rumah tangga tumbuh,3,phrase,false
+EXP.1,negative,konsumsi rumah tangga turun,3,phrase,false
+EXP.1.a,include,belanja bahan makanan,3,phrase,true
+EXP.1.a,include,konsumsi makanan rumah tangga,3,phrase,true
+EXP.1.a,include,harga bahan pangan,3,phrase,true
+EXP.1.b,include,belanja pakaian,3,phrase,true
+EXP.1.b,include,pengeluaran alas kaki,3,phrase,true
+EXP.1.c,include,biaya sewa rumah,3,phrase,true
+EXP.1.c,include,belanja perabot rumah tangga,3,phrase,true
+EXP.1.c,include,biaya listrik rumah tangga,3,phrase,true
+EXP.1.d,include,biaya kesehatan dan pendidikan,3,phrase,true
+EXP.1.d,include,pengeluaran pendidikan,3,phrase,true
+EXP.1.d,include,pengeluaran kesehatan,3,phrase,true
+EXP.1.e,include,pengeluaran transportasi,3,phrase,true
+EXP.1.e,include,belanja pulsa,3,phrase,true
+EXP.1.e,include,biaya komunikasi rumah tangga,3,phrase,true
+EXP.1.f,include,belanja restoran dan hotel,3,phrase,true
+EXP.1.f,include,pengeluaran hotel,3,phrase,true
+EXP.1.f,include,pengeluaran restoran,3,phrase,true
+EXP.1.g,include,pengeluaran rekreasi rumah tangga,3,phrase,true
+EXP.1.g,include,konsumsi rumah tangga lainnya,3,phrase,true
+EXP.2,include,konsumsi lnprt,4,phrase,true
+EXP.2,include,belanja organisasi nirlaba,3,phrase,true
+EXP.2,include,pengeluaran lembaga nonprofit,3,phrase,true
+EXP.3,include,konsumsi pemerintah,4,phrase,true
+EXP.3,include,belanja barang dan jasa pemerintah,3,phrase,true
+EXP.3,positive,belanja pemerintah meningkat,3,phrase,false
+EXP.3,negative,belanja pemerintah turun,3,phrase,false
+EXP.3.a,include,konsumsi kolektif pemerintah,4,phrase,true
+EXP.3.a,include,layanan publik kolektif,3,phrase,true
+EXP.3.b,include,konsumsi individu pemerintah,4,phrase,true
+EXP.3.b,include,layanan individu pemerintah,3,phrase,true
+EXP.4,include,pembentukan modal tetap bruto,4,phrase,true
+EXP.4,include,realisasi investasi,3,phrase,true
+EXP.4,positive,realisasi investasi meningkat,3,phrase,false
+EXP.4,negative,investasi menurun,3,phrase,false
+EXP.4.a,include,investasi bangunan,4,phrase,true
+EXP.4.a,include,pembangunan hotel baru,4,phrase,true
+EXP.4.a,include,proyek gedung baru,3,phrase,true
+EXP.4.a,positive,pembangunan dimulai,3,phrase,false
+EXP.4.a,negative,pembangunan tertunda,3,phrase,false
+EXP.4.b,include,investasi mesin,4,phrase,true
+EXP.4.b,include,pembelian mesin produksi,3,phrase,true
+EXP.4.c,include,investasi kendaraan,4,phrase,true
+EXP.4.c,include,pembelian kendaraan operasional,3,phrase,true
+EXP.4.d,include,investasi peralatan,4,phrase,true
+EXP.4.d,include,pembelian peralatan usaha,3,phrase,true
+EXP.4.e,include,ternak pembiakan,3,phrase,true
+EXP.4.e,include,tanaman menghasilkan,3,phrase,true
+EXP.4.e,include,cultivated biological resources,4,phrase,true
+EXP.4.f,include,investasi perangkat lunak,4,phrase,true
+EXP.4.f,include,produk kekayaan intelektual,4,phrase,true
+EXP.4.f,include,hasil penelitian dikapitalisasi,3,phrase,true
+EXP.5,include,perubahan inventori,4,phrase,true
+EXP.5,include,stok barang meningkat,3,phrase,true
+EXP.5,include,penumpukan persediaan,3,phrase,true
+EXP.5,positive,persediaan meningkat,2,phrase,false
+EXP.5,negative,persediaan menurun,2,phrase,false
+EXP.6,include,ekspor barang dan jasa,4,phrase,true
+EXP.6,include,nilai ekspor,3,phrase,true
+EXP.6,positive,ekspor meningkat,3,phrase,false
+EXP.6,negative,ekspor menurun,3,phrase,false
+EXP.6.a,include,ekspor barang,4,phrase,true
+EXP.6.a.1,include,ekspor nonmigas,4,phrase,true
+EXP.6.a.1,include,ekspor komoditas nonmigas,3,phrase,true
+EXP.6.a.2,include,ekspor migas,4,phrase,true
+EXP.6.a.2,include,ekspor minyak dan gas,3,phrase,true
+EXP.6.b,include,ekspor jasa,4,phrase,true
+EXP.6.b,include,pendapatan jasa dari luar negeri,3,phrase,true
+EXP.7,include,impor barang dan jasa,4,phrase,true
+EXP.7,include,nilai impor,3,phrase,true
+EXP.7,positive,impor menurun,3,phrase,false
+EXP.7,negative,impor meningkat,3,phrase,false
+EXP.7.a,include,impor barang,4,phrase,true
+EXP.7.a.1,include,impor nonmigas,4,phrase,true
+EXP.7.a.1,include,impor komoditas nonmigas,3,phrase,true
+EXP.7.a.2,include,impor migas,4,phrase,true
+EXP.7.a.2,include,impor minyak dan gas,3,phrase,true
+EXP.7.b,include,impor jasa,4,phrase,true
+EXP.7.b,include,pembayaran jasa ke luar negeri,3,phrase,true
