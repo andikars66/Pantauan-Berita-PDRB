@@ -74,4 +74,9 @@ def test_result_ui_has_cards_tabs_and_split_dimension_tables():
     assert len(app.tabs) == 3
     assert len(app.dataframe) == 4
     assert len(app.multiselect) == 4
-    assert len(app.get("download_button")) == 2
+    download_labels = [button.label for button in app.get("download_button")]
+    assert download_labels == [
+        "⬇️ Download Lapangan Usaha",
+        "⬇️ Download Pengeluaran",
+        "⬇️ Download Raw Result",
+    ]

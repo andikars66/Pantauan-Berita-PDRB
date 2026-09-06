@@ -39,7 +39,11 @@ def _write_table(sheet, start_row: int, headers: list[str], rows: Iterable[Itera
     return row_number
 
 
-def build_main_excel(result: dict[str, Any]) -> BytesIO:
+def build_main_excel(result: dict[str, Any], dimension: str | None = None) -> BytesIO:
+    if dimension not in (None, "LU", "EXP"):
+        raise ValueError("dimension must be 'LU', 'EXP', or None")
+
+    dimension_name = {"LU": "Lapangan Usaha", "EXP": "Pengeluaran"}.get(dimension)
     workbook = Workbook()
     summary_sheet = workbook.active
     summary_sheet.title = "Ringkasan"
@@ -60,6 +64,8 @@ def build_main_excel(result: dict[str, Any]) -> BytesIO:
     )
     row += 1
     taxonomy = result["taxonomy_summary"]
+    if dimension_name:
+        taxonomy = taxonomy[taxonomy["Dimensi"] == dimension_name]
     row = _write_table(
         summary_sheet, row, list(taxonomy.columns), taxonomy.itertuples(index=False, name=None),
     )
@@ -72,7 +78,10 @@ def build_main_excel(result: dict[str, Any]) -> BytesIO:
     news_sheet = workbook.create_sheet("Berita")
     headers = ["Dimensi", "Kode", "Sektor/Subsektor", "Judul Berita", "Tanggal", "Pengaruh", "Tautan", "Sumber"]
     rows = []
-    for item in result["selected_df"].itertuples():
+    selected = result["selected_df"]
+    if dimension:
+        selected = selected[selected["dimension"] == dimension]
+    for item in selected.itertuples():
         rows.append((
             "Lapangan Usaha" if item.dimension == "LU" else "Pengeluaran",
             item.taxonomy_code.split(".", 1)[1], item.label, item.title,

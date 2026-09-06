@@ -319,12 +319,18 @@ def render_results(result: dict) -> None:
     main_tab, raw_tab, status_tab = st.tabs(["📋 Hasil Utama", "🗃️ Raw Result", "🩺 Status Sumber"])
     with main_tab:
         render_dimension_results(result, "LU", "Lapangan Usaha", "🏭")
+        st.download_button(
+            "⬇️ Download Lapangan Usaha",
+            build_main_excel(result, dimension="LU"),
+            file_name=f'berita_pdrb_lapangan_usaha_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
         st.divider()
         render_dimension_results(result, "EXP", "Pengeluaran", "🛒")
         st.download_button(
-            "⬇️ Download Hasil Utama",
-            build_main_excel(result),
-            file_name=f'berita_pdrb_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
+            "⬇️ Download Pengeluaran",
+            build_main_excel(result, dimension="EXP"),
+            file_name=f'berita_pdrb_pengeluaran_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
     with raw_tab:

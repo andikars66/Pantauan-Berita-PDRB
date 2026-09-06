@@ -46,10 +46,16 @@ def test_representative_pipeline_long_rows_zero_counts_and_exports(monkeypatch, 
     assert coal == 0
 
     main_book = load_workbook(build_main_excel(result), data_only=True)
+    lu_book = load_workbook(build_main_excel(result, dimension="LU"), data_only=True)
+    exp_book = load_workbook(build_main_excel(result, dimension="EXP"), data_only=True)
     raw_book = load_workbook(build_raw_excel(result), data_only=True)
     assert main_book.sheetnames == ["Ringkasan", "Berita"]
     assert raw_book.sheetnames == ["Raw"]
     assert main_book["Berita"].max_row == 4
+    assert lu_book["Berita"].max_row == 3
+    assert exp_book["Berita"].max_row == 2
+    assert {row[0].value for row in lu_book["Berita"].iter_rows(min_row=2)} == {"Lapangan Usaha"}
+    assert {row[0].value for row in exp_book["Berita"].iter_rows(min_row=2)} == {"Pengeluaran"}
     assert raw_book["Raw"].max_row == 2
 
 
