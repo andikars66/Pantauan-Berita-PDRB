@@ -28,9 +28,9 @@ def inject_styles() -> None:
         <style>
         [data-testid="stAppViewContainer"] {
             background:
-                radial-gradient(circle at 12% 0%, rgba(40, 88, 210, .20), transparent 34rem),
-                radial-gradient(circle at 92% 18%, rgba(124, 58, 237, .14), transparent 30rem),
-                linear-gradient(145deg, #071126 0%, #0b1022 52%, #10152b 100%);
+                radial-gradient(circle at 12% 0%, rgba(255, 127, 0, .14), transparent 34rem),
+                radial-gradient(circle at 92% 18%, rgba(245, 158, 11, .09), transparent 30rem),
+                linear-gradient(145deg, #fff8f1 0%, #ffffff 52%, #fffaf5 100%);
         }
         [data-testid="stHeader"] { background: transparent; }
         [data-testid="stToolbar"] { right: 1rem; }
@@ -40,63 +40,64 @@ def inject_styles() -> None:
             padding-bottom: 4rem;
         }
         .hero-card {
-            background: linear-gradient(110deg, rgba(30, 64, 175, .42), rgba(15, 23, 42, .80));
-            border: 1px solid rgba(96, 165, 250, .28);
+            background: linear-gradient(110deg, #fff0df, rgba(255, 255, 255, .94));
+            border: 1px solid rgba(255, 127, 0, .28);
             border-radius: 22px;
             padding: 1.75rem 1.9rem;
             margin-bottom: 1.15rem;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, .24);
+            box-shadow: 0 20px 55px rgba(120, 65, 10, .12);
         }
         .hero-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
         .hero-copy { display: flex; align-items: center; gap: 1rem; }
         .hero-icon {
             width: 54px; height: 54px; display: grid; place-items: center;
             border-radius: 15px; font-size: 1.65rem;
-            background: linear-gradient(145deg, rgba(59, 130, 246, .42), rgba(99, 102, 241, .45));
-            border: 1px solid rgba(147, 197, 253, .28);
+            background: linear-gradient(145deg, #ff9a33, #ff7f00);
+            border: 1px solid rgba(217, 95, 0, .22);
+            box-shadow: 0 8px 20px rgba(255, 127, 0, .20);
         }
-        .hero-card h1 { margin: 0; color: #f8fafc; font-size: 1.9rem; line-height: 1.2; }
-        .hero-card p { margin: .45rem 0 0; color: #aab7d3; font-size: .94rem; }
+        .hero-card h1 { margin: 0; color: #2d1b0e; font-size: 1.9rem; line-height: 1.2; }
+        .hero-card p { margin: .45rem 0 0; color: #76583f; font-size: .94rem; }
         .status-badge {
-            white-space: nowrap; color: #6ee7b7; border: 1px solid rgba(52, 211, 153, .28);
-            background: rgba(16, 185, 129, .10); border-radius: 999px;
+            white-space: nowrap; color: #157347; border: 1px solid rgba(21, 115, 71, .22);
+            background: #edf9f2; border-radius: 999px;
             padding: .42rem .72rem; font-size: .72rem; font-weight: 700; letter-spacing: .04em;
         }
         .eyebrow {
-            color: #93a4c4; font-weight: 800; font-size: .73rem;
+            color: #c45f00; font-weight: 800; font-size: .73rem;
             letter-spacing: .12em; margin-bottom: .35rem;
         }
         .period-note {
-            color: #9fb0ce; font-size: .84rem; padding-top: .15rem;
+            color: #76583f; font-size: .84rem; padding-top: .15rem;
         }
         .section-heading {
             display: flex; align-items: center; gap: .6rem; margin: .35rem 0 .75rem;
         }
-        .section-heading h3 { margin: 0; font-size: 1.05rem; color: #e7edf9; }
+        .section-heading h3 { margin: 0; font-size: 1.05rem; color: #352318; }
         .section-heading span {
-            font-size: .72rem; color: #94a3b8; border: 1px solid rgba(148, 163, 184, .22);
+            font-size: .72rem; color: #8a674d; border: 1px solid rgba(138, 103, 77, .22);
             border-radius: 999px; padding: .18rem .5rem;
         }
         div[data-testid="stVerticalBlockBorderWrapper"] {
-            border-color: rgba(100, 116, 139, .28) !important;
-            background: rgba(15, 23, 42, .66);
+            border-color: rgba(255, 127, 0, .20) !important;
+            background: rgba(255, 255, 255, .88);
             border-radius: 18px;
-            box-shadow: 0 18px 48px rgba(0, 0, 0, .16);
+            box-shadow: 0 16px 42px rgba(120, 65, 10, .09);
         }
         div[data-testid="stMetric"] {
             min-height: 108px;
             padding: 1rem 1.05rem;
-            border: 1px solid rgba(96, 165, 250, .18);
+            border: 1px solid rgba(255, 127, 0, .22);
             border-radius: 16px;
-            background: linear-gradient(145deg, rgba(30, 41, 59, .84), rgba(15, 23, 42, .80));
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .13);
+            background: linear-gradient(145deg, #ffffff, #fff7ed);
+            box-shadow: 0 10px 26px rgba(120, 65, 10, .08);
         }
-        div[data-testid="stMetricLabel"] { color: #a9b8d2; }
-        div[data-testid="stMetricValue"] { color: #f8fafc; }
+        div[data-testid="stMetricLabel"] { color: #7c5b45; }
+        div[data-testid="stMetricValue"] { color: #2d1b0e; }
         div[data-baseweb="select"] > div,
         div[data-testid="stPopover"] > button {
-            background: rgba(30, 41, 59, .72) !important;
-            border-color: rgba(148, 163, 184, .26) !important;
+            background: rgba(255, 255, 255, .94) !important;
+            border-color: rgba(255, 127, 0, .30) !important;
             border-radius: 11px !important;
         }
         .stButton > button, .stDownloadButton > button {
@@ -105,19 +106,23 @@ def inject_styles() -> None:
             padding: .42rem .9rem;
             border-radius: 10px;
             font-weight: 700;
+            background: linear-gradient(90deg, #FF7F00, #F59E0B) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 26px rgba(255, 127, 0, .28);
         }
         .st-key-run_button button {
             width: 100% !important;
             min-height: 2.65rem;
             border: 0;
-            background: linear-gradient(90deg, #2563eb, #5b46e8) !important;
-            box-shadow: 0 10px 26px rgba(37, 99, 235, .30);
+            background: linear-gradient(90deg, #FF7F00, #F59E0B) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 26px rgba(255, 127, 0, .28);
         }
         .st-key-run_button button:hover { filter: brightness(1.08); transform: translateY(-1px); }
         div[data-testid="stCheckbox"] { padding: .08rem 0; }
         div[data-testid="stDataFrame"] { border-radius: 14px; overflow: hidden; }
         div[data-testid="stTabs"] button { font-weight: 700; }
-        hr { border-color: rgba(148, 163, 184, .16); }
+        hr { border-color: rgba(138, 103, 77, .16); }
         @media (max-width: 760px) {
             .block-container { padding: 1rem .9rem 3rem; }
             .hero-card { padding: 1.25rem; }
@@ -301,22 +306,6 @@ def render_summary_cards(result: dict) -> None:
     st.caption("Raw Records menghitung hasil scraping; baris klasifikasi menghitung pasangan artikel × taxonomy.")
 
 
-def render_downloads(result: dict) -> None:
-    main_bytes = build_main_excel(result)
-    raw_bytes = build_raw_excel(result)
-    first, second, _ = st.columns([1, 1, 1.45])
-    first.download_button(
-        "⬇ Hasil utama", main_bytes,
-        file_name=f'berita_pdrb_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    )
-    second.download_button(
-        "⬇ Raw result", raw_bytes,
-        file_name=f'raw_berita_pdrb_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    )
-
-
 def render_results(result: dict) -> None:
     status = result["metadata"]["status"]
     if status == "Selesai":
@@ -327,12 +316,17 @@ def render_results(result: dict) -> None:
         st.error("Proses gagal. Periksa tab Status Sumber.")
 
     render_summary_cards(result)
-    render_downloads(result)
     main_tab, raw_tab, status_tab = st.tabs(["📋 Hasil Utama", "🗃️ Raw Result", "🩺 Status Sumber"])
     with main_tab:
         render_dimension_results(result, "LU", "Lapangan Usaha", "🏭")
         st.divider()
         render_dimension_results(result, "EXP", "Pengeluaran", "🛒")
+        st.download_button(
+            "⬇️ Download Hasil Utama",
+            build_main_excel(result),
+            file_name=f'berita_pdrb_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
     with raw_tab:
         raw = result["raw_df"].rename(columns={
             "classifications": "Sektor/Subsektor", "title": "Judul Berita", "date": "Tanggal",
@@ -342,6 +336,12 @@ def render_results(result: dict) -> None:
         st.dataframe(
             visible, hide_index=True, use_container_width=True,
             column_config={"Tautan": st.column_config.LinkColumn("Tautan", display_text="Buka ↗")},
+        )
+        st.download_button(
+            "⬇️ Download Raw Result",
+            build_raw_excel(result),
+            file_name=f'raw_berita_pdrb_{result["metadata"]["year"]}_T{result["metadata"]["quarter"]}.xlsx',
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
     with status_tab:
         st.dataframe(result["source_statuses"], hide_index=True, use_container_width=True)
