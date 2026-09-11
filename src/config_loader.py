@@ -13,18 +13,23 @@ class ConfigError(ValueError):
 @dataclass(frozen=True)
 class AppConfig:
     taxonomy: pd.DataFrame
-    keywords: pd.DataFrame
+    serper_keywords: pd.DataFrame
+    classification_keywords: pd.DataFrame
+    global_excludes: pd.DataFrame
     geography: pd.DataFrame
     portals: pd.DataFrame
 
 
 TAXONOMY_COLUMNS = {
     "dimension", "taxonomy_code", "parent_code", "level", "sort_order",
-    "label", "is_leaf", "selectable", "min_include_score",
+    "label", "is_leaf", "selectable",
 }
-KEYWORD_COLUMNS = {
-    "taxonomy_code", "keyword_type", "keyword", "weight", "match_mode", "serper_query",
+SERPER_KEYWORD_COLUMNS = {"taxonomy_code", "keyword", "priority", "active"}
+CLASSIFICATION_KEYWORD_COLUMNS = {
+    "taxonomy_code", "include_keywords", "exclude_keywords",
+    "positive_keywords", "negative_keywords",
 }
+GLOBAL_EXCLUDE_COLUMNS = {"keyword", "active"}
 GEOGRAPHY_COLUMNS = {"term", "group", "active"}
 PORTAL_COLUMNS = {"id", "name", "url", "active"}
 
@@ -62,7 +67,7 @@ def validate_taxonomy(frame: pd.DataFrame) -> pd.DataFrame:
         raise ConfigError(f"taxonomy.csv: taxonomy_code duplikat: {', '.join(duplicates)}")
     if not result["dimension"].isin({"LU", "EXP"}).all():
         raise ConfigError("taxonomy.csv: dimension hanya boleh LU atau EXP")
-    for column in ("level", "sort_order", "min_include_score"):
+    for column in ("level", "sort_order"):
         result[column] = pd.to_numeric(result[column], errors="coerce")
         if result[column].isna().any():
             raise ConfigError(f"taxonomy.csv: {column} harus numerik")
@@ -91,36 +96,140 @@ def validate_taxonomy(frame: pd.DataFrame) -> pd.DataFrame:
     return result.sort_values("sort_order", kind="stable").reset_index(drop=True)
 
 
-def validate_keywords(frame: pd.DataFrame, taxonomy: pd.DataFrame) -> pd.DataFrame:
+def _keyword_terms(value: object) -> list[str]:
+    return [term.strip() for term in str(value or "").split(",") if term.strip()]
+
+
+def _duplicate_terms(terms: list[str]) -> list[str]:
+    normalized = pd.Series(terms, dtype=str).str.casefold()
+    return sorted(set(normalized[normalized.duplicated()].tolist()))
+
+
+def validate_serper_keywords(frame: pd.DataFrame, taxonomy: pd.DataFrame) -> pd.DataFrame:
     result = frame.copy()
     valid_codes = set(taxonomy["taxonomy_code"])
     unknown = sorted(set(result["taxonomy_code"]) - valid_codes)
     if unknown:
-        raise ConfigError(f"keywords.csv: taxonomy_code tidak dikenal: {', '.join(unknown)}")
-    valid_types = {"include", "exclude", "positive", "negative"}
-    invalid_types = sorted(set(result["keyword_type"]) - valid_types)
-    if invalid_types:
-        raise ConfigError(f"keywords.csv: keyword_type tidak valid: {', '.join(invalid_types)}")
-    if not result["match_mode"].isin({"phrase", "token"}).all():
-        raise ConfigError("keywords.csv: match_mode hanya boleh phrase atau token")
-    result["weight"] = pd.to_numeric(result["weight"], errors="coerce")
-    if result["weight"].isna().any() or (result["weight"] <= 0).any():
-        raise ConfigError("keywords.csv: weight harus angka positif")
+        raise ConfigError(f"serper_keywords.csv: taxonomy_code tidak dikenal: {', '.join(unknown)}")
     if (result["keyword"].str.strip() == "").any():
-        raise ConfigError("keywords.csv: keyword tidak boleh kosong")
-    result["serper_query"] = _parse_bool(result["serper_query"], "serper_query", "keywords.csv")
+        raise ConfigError("serper_keywords.csv: keyword tidak boleh kosong")
+    result["priority"] = pd.to_numeric(result["priority"], errors="coerce")
+    if result["priority"].isna().any() or (result["priority"] < 1).any():
+        raise ConfigError("serper_keywords.csv: priority harus integer positif")
+    result["priority"] = result["priority"].astype(int)
+    result["active"] = _parse_bool(result["active"], "active", "serper_keywords.csv")
+    normalized = result["keyword"].str.strip().str.casefold()
+    if result.assign(_keyword=normalized).duplicated(["taxonomy_code", "_keyword"]).any():
+        raise ConfigError("serper_keywords.csv: keyword duplikat dalam taxonomy yang sama")
+
     selectable = set(taxonomy.loc[taxonomy["selectable"], "taxonomy_code"])
-    covered = set(result.loc[result["keyword_type"] == "include", "taxonomy_code"])
-    uncovered = sorted(selectable - covered)
+    active = result[result["active"]]
+    counts = active.groupby("taxonomy_code")["keyword"].size()
+    uncovered = sorted(code for code in selectable if counts.get(code, 0) < 3)
     if uncovered:
-        raise ConfigError(f"keywords.csv: taxonomy selectable tanpa include rule: {', '.join(uncovered)}")
+        raise ConfigError(
+            "serper_keywords.csv: taxonomy harus memiliki minimal 3 keyword aktif: "
+            + ", ".join(uncovered)
+        )
+    leaf_codes = set(taxonomy.loc[taxonomy["is_leaf"] & taxonomy["selectable"], "taxonomy_code"])
+    excessive = sorted(code for code in leaf_codes if counts.get(code, 0) > 10)
+    if excessive:
+        raise ConfigError(
+            "serper_keywords.csv: taxonomy leaf maksimal memiliki 10 keyword aktif: "
+            + ", ".join(excessive)
+        )
+
+    terms_by_code = {
+        code: set(group["keyword"].str.strip().str.casefold())
+        for code, group in active.groupby("taxonomy_code", sort=False)
+    }
+    missing_representation: list[str] = []
+    for parent in taxonomy.loc[~taxonomy["is_leaf"] & taxonomy["selectable"], "taxonomy_code"]:
+        children = taxonomy.loc[
+            (taxonomy["parent_code"] == parent) & taxonomy["selectable"], "taxonomy_code",
+        ]
+        for child in children:
+            if not terms_by_code.get(parent, set()) & terms_by_code.get(child, set()):
+                missing_representation.append(f"{parent}->{child}")
+    if missing_representation:
+        raise ConfigError(
+            "serper_keywords.csv: keyword parent belum mewakili child: "
+            + ", ".join(missing_representation)
+        )
+    return result.sort_values(["taxonomy_code", "priority"], kind="stable").reset_index(drop=True)
+
+
+def validate_classification_keywords(frame: pd.DataFrame, taxonomy: pd.DataFrame) -> pd.DataFrame:
+    result = frame.copy()
+    valid_codes = set(taxonomy["taxonomy_code"])
+    unknown = sorted(set(result["taxonomy_code"]) - valid_codes)
+    if unknown:
+        raise ConfigError(
+            f"classification_keywords.csv: taxonomy_code tidak dikenal: {', '.join(unknown)}"
+        )
+    duplicates = sorted(result.loc[result["taxonomy_code"].duplicated(), "taxonomy_code"].unique())
+    if duplicates:
+        raise ConfigError(
+            f"classification_keywords.csv: taxonomy_code duplikat: {', '.join(duplicates)}"
+        )
+    selectable = set(taxonomy.loc[taxonomy["selectable"], "taxonomy_code"])
+    missing = sorted(selectable - set(result["taxonomy_code"]))
+    if missing:
+        raise ConfigError(
+            "classification_keywords.csv: taxonomy selectable belum dikonfigurasi: "
+            + ", ".join(missing)
+        )
+    for row in result.itertuples():
+        include = _keyword_terms(row.include_keywords)
+        if not include:
+            raise ConfigError(
+                f"classification_keywords.csv: include_keywords kosong untuk {row.taxonomy_code}"
+            )
+        for column in (
+            "include_keywords", "exclude_keywords", "positive_keywords", "negative_keywords",
+        ):
+            if "|" in str(getattr(row, column)):
+                raise ConfigError("classification_keywords.csv: gunakan koma, bukan |, sebagai pemisah keyword")
+            terms = _keyword_terms(getattr(row, column))
+            duplicate_terms = _duplicate_terms(terms)
+            if duplicate_terms:
+                raise ConfigError(
+                    f"classification_keywords.csv: {column} duplikat untuk {row.taxonomy_code}: "
+                    + ", ".join(duplicate_terms)
+                )
+        excluded = {term.casefold() for term in _keyword_terms(row.exclude_keywords)}
+        conflict = sorted({term.casefold() for term in include} & excluded)
+        if conflict:
+            raise ConfigError(
+                f"classification_keywords.csv: include/exclude konflik untuk {row.taxonomy_code}: "
+                + ", ".join(conflict)
+            )
+    return result
+
+
+def validate_global_excludes(frame: pd.DataFrame) -> pd.DataFrame:
+    result = frame.copy()
+    if (result["keyword"].str.strip() == "").any():
+        raise ConfigError("global_exclude_keywords.csv: keyword tidak boleh kosong")
+    result["active"] = _parse_bool(result["active"], "active", "global_exclude_keywords.csv")
+    normalized = result["keyword"].str.strip().str.casefold()
+    if normalized.duplicated().any():
+        raise ConfigError("global_exclude_keywords.csv: keyword duplikat")
     return result
 
 
 def load_config(config_dir: str | Path) -> AppConfig:
     root = Path(config_dir)
     taxonomy = validate_taxonomy(_read_csv(root / "taxonomy.csv", TAXONOMY_COLUMNS))
-    keywords = validate_keywords(_read_csv(root / "keywords.csv", KEYWORD_COLUMNS), taxonomy)
+    serper_keywords = validate_serper_keywords(
+        _read_csv(root / "serper_keywords.csv", SERPER_KEYWORD_COLUMNS), taxonomy,
+    )
+    classification_keywords = validate_classification_keywords(
+        _read_csv(root / "classification_keywords.csv", CLASSIFICATION_KEYWORD_COLUMNS), taxonomy,
+    )
+    global_excludes = validate_global_excludes(
+        _read_csv(root / "global_exclude_keywords.csv", GLOBAL_EXCLUDE_COLUMNS),
+    )
     geography = _read_csv(root / "geography.csv", GEOGRAPHY_COLUMNS)
     geography["active"] = _parse_bool(geography["active"], "active", "geography.csv")
     if not geography["group"].isin({"local", "province", "other_ntb"}).all():
@@ -129,13 +238,16 @@ def load_config(config_dir: str | Path) -> AppConfig:
     portals["active"] = _parse_bool(portals["active"], "active", "portals.csv")
     if "max_pages" in portals.columns:
         portals["max_pages"] = pd.to_numeric(portals["max_pages"], errors="coerce")
-        if portals["max_pages"].isna().any() or (portals["max_pages"] < 1).any():
+        if (portals["max_pages"].isna().any() or (portals["max_pages"] < 1).any()
+                or (portals["max_pages"] % 1 != 0).any()):
             raise ConfigError("portals.csv: max_pages harus integer positif")
         portals["max_pages"] = portals["max_pages"].astype(int)
-    expected = {"inside_lombok", "lombok_post"}
-    if set(portals.loc[portals["active"], "id"]) != expected:
-        raise ConfigError("portals.csv: kedua portal MVP harus aktif dan tidak boleh ada portal lain")
-    return AppConfig(taxonomy, keywords, geography, portals)
+    from .portal_scrapers import PORTAL_PARSERS
+    if portals["id"].duplicated().any() or not portals["id"].isin(PORTAL_PARSERS).all():
+        raise ConfigError("portals.csv: id portal duplikat atau tidak didukung")
+    return AppConfig(
+        taxonomy, serper_keywords, classification_keywords, global_excludes, geography, portals,
+    )
 
 
 def descendants(code: str, taxonomy: pd.DataFrame) -> list[str]:
@@ -187,12 +299,23 @@ def update_hierarchical_selection(
 
 
 def query_targets(selected: list[str], taxonomy: pd.DataFrame) -> list[str]:
-    """Expand parents to deepest selectable descendants for efficient Serper queries."""
-    targets: set[str] = set()
+    """Use the highest selected nodes so a selected parent supplies its own Serper keywords."""
     selectable = set(taxonomy.loc[taxonomy["selectable"], "taxonomy_code"])
+    unknown = set(selected) - selectable
+    if unknown:
+        raise ValueError(f"Taxonomy pilihan tidak valid: {', '.join(sorted(unknown))}")
+    selected_set = set(selected)
+    parent_by_code = dict(zip(taxonomy["taxonomy_code"], taxonomy["parent_code"]))
+    targets: set[str] = set()
     for code in selected:
-        desc = [item for item in descendants(code, taxonomy) if item in selectable]
-        leaves = [item for item in desc if bool(taxonomy.set_index("taxonomy_code").loc[item, "is_leaf"])]
-        targets.update(leaves or [code])
+        ancestor = parent_by_code.get(code, "")
+        has_selected_ancestor = False
+        while ancestor:
+            if ancestor in selected_set:
+                has_selected_ancestor = True
+                break
+            ancestor = parent_by_code.get(ancestor, "")
+        if not has_selected_ancestor:
+            targets.add(code)
     order = dict(zip(taxonomy["taxonomy_code"], taxonomy["sort_order"]))
     return sorted(targets, key=order.__getitem__)

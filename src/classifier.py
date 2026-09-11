@@ -20,44 +20,47 @@ class Classification:
     negative_score: float
 
 
-def _rule_matches(text: str, keyword: str, mode: str) -> bool:
+def _keyword_terms(value: object) -> list[str]:
+    return [term.strip() for term in str(value or "").split(",") if term.strip()]
+
+
+def _rule_matches(text: str, keyword: str) -> bool:
     keyword = normalize_text(keyword)
     if not keyword:
         return False
-    if mode == "token":
-        return re.search(rf"(?<!\w){re.escape(keyword)}(?!\w)", text) is not None
-    return keyword in text
+    return re.search(rf"(?<!\w){re.escape(keyword)}(?!\w)", text) is not None
 
 
-def _score(rules: pd.DataFrame, text: str, keyword_type: str) -> float:
-    relevant = rules[rules["keyword_type"] == keyword_type]
-    return float(sum(
-        row.weight for row in relevant.itertuples()
-        if _rule_matches(text, row.keyword, row.match_mode)
-    ))
+def _score(terms: list[str], text: str) -> float:
+    return float(sum(_rule_matches(text, term) for term in terms))
 
 
-def classify_text(text: object, taxonomy: pd.DataFrame, keywords: pd.DataFrame) -> list[Classification]:
+def classify_text(
+    text: object,
+    taxonomy: pd.DataFrame,
+    classification_keywords: pd.DataFrame,
+    global_excludes: pd.DataFrame | None = None,
+) -> list[Classification]:
     normalized = normalize_text(text)
+    if global_excludes is not None and not global_excludes.empty:
+        active_global = global_excludes.loc[global_excludes["active"], "keyword"].tolist()
+        if any(_rule_matches(normalized, term) for term in active_global):
+            return []
+
     candidates: list[Classification] = []
-    rules_by_code = {code: group for code, group in keywords.groupby("taxonomy_code", sort=False)}
+    rules_by_code = classification_keywords.set_index("taxonomy_code")
     for node in taxonomy.loc[taxonomy["selectable"]].itertuples():
-        rules = rules_by_code.get(node.taxonomy_code)
-        if rules is None:
+        if node.taxonomy_code not in rules_by_code.index:
             continue
-        include_score = _score(rules, normalized, "include")
-        has_include = any(
-            _rule_matches(normalized, row.keyword, row.match_mode)
-            for row in rules.loc[rules["keyword_type"] == "include"].itertuples()
-        )
-        excluded = any(
-            _rule_matches(normalized, row.keyword, row.match_mode)
-            for row in rules.loc[rules["keyword_type"] == "exclude"].itertuples()
-        )
-        if not has_include or include_score < float(node.min_include_score) or excluded:
+        rules = rules_by_code.loc[node.taxonomy_code]
+        include_terms = _keyword_terms(rules["include_keywords"])
+        exclude_terms = _keyword_terms(rules["exclude_keywords"])
+        include_score = _score(include_terms, normalized)
+        excluded = any(_rule_matches(normalized, term) for term in exclude_terms)
+        if include_score == 0 or excluded:
             continue
-        positive = _score(rules, normalized, "positive")
-        negative = _score(rules, normalized, "negative")
+        positive = _score(_keyword_terms(rules["positive_keywords"]), normalized)
+        negative = _score(_keyword_terms(rules["negative_keywords"]), normalized)
         impact = "Positif" if positive > negative else "Negatif" if negative > positive else "Netral"
         candidates.append(Classification(
             node.taxonomy_code, node.dimension, node.label, int(node.sort_order),

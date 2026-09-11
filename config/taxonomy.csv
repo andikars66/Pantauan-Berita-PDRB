@@ -1,92 +1,92 @@
-dimension,taxonomy_code,parent_code,level,sort_order,label,is_leaf,selectable,min_include_score
-LU,LU.A,,0,10,"Pertanian, Kehutanan dan Perikanan",false,true,2
-LU,LU.A.1,LU.A,1,20,"Pertanian, Peternakan, Perburuan dan Jasa Pertanian",false,true,2
-LU,LU.A.1.a,LU.A.1,2,30,Tanaman Pangan,true,true,2
-LU,LU.A.1.b,LU.A.1,2,40,Tanaman Hortikultura,true,true,2
-LU,LU.A.1.c,LU.A.1,2,50,Tanaman Perkebunan,true,true,2
-LU,LU.A.1.d,LU.A.1,2,60,Peternakan,true,true,2
-LU,LU.A.1.e,LU.A.1,2,70,Jasa Pertanian dan Perburuan,true,true,2
-LU,LU.A.2,LU.A,1,80,Kehutanan dan Penebangan Kayu,true,true,2
-LU,LU.A.3,LU.A,1,90,Perikanan,true,true,2
-LU,LU.B,,0,100,Pertambangan dan Penggalian,false,true,2
-LU,LU.B.1,LU.B,1,110,"Pertambangan Minyak, Gas dan Panas Bumi",true,true,2
-LU,LU.B.2,LU.B,1,120,Pertambangan Batubara dan Lignit,true,true,2
-LU,LU.B.3,LU.B,1,130,Pertambangan Bijih Logam,true,true,2
-LU,LU.B.4,LU.B,1,140,Pertambangan dan Penggalian Lainnya,true,true,2
-LU,LU.C,,0,150,Industri Pengolahan,false,true,2
-LU,LU.C.1,LU.C,1,160,Industri Batubara dan Pengilangan Migas,true,true,2
-LU,LU.C.2,LU.C,1,170,Industri Makanan dan Minuman,true,true,2
-LU,LU.C.3,LU.C,1,180,Industri Pengolahan Tembakau,true,true,2
-LU,LU.C.4,LU.C,1,190,Industri Tekstil dan Pakaian Jadi,true,true,2
-LU,LU.C.5,LU.C,1,200,"Industri Kulit, Barang dari Kulit dan Alas Kaki",true,true,2
-LU,LU.C.6,LU.C,1,210,"Industri Kayu, Barang dari Kayu dan Gabus dan Barang Anyaman dari Bambu, Rotan dan Sejenisnya",true,true,2
-LU,LU.C.7,LU.C,1,220,"Industri Kertas dan Barang dari Kertas; Percetakan dan Reproduksi Media Rekaman",true,true,2
-LU,LU.C.8,LU.C,1,230,"Industri Kimia, Farmasi dan Obat Tradisional",true,true,2
-LU,LU.C.9,LU.C,1,240,"Industri Karet, Barang dari Karet dan Plastik",true,true,2
-LU,LU.C.10,LU.C,1,250,Industri Barang Galian Bukan Logam,true,true,2
-LU,LU.C.11,LU.C,1,260,Industri Logam Dasar,true,true,2
-LU,LU.C.12,LU.C,1,270,"Industri Barang Logam; Komputer, Barang Elektronik, Optik; dan Peralatan Listrik",true,true,2
-LU,LU.C.13,LU.C,1,280,Industri Mesin dan Perlengkapan,true,true,2
-LU,LU.C.14,LU.C,1,290,Industri Alat Angkutan,true,true,2
-LU,LU.C.15,LU.C,1,300,Industri Furnitur,true,true,2
-LU,LU.C.16,LU.C,1,310,"Industri Pengolahan Lainnya; Jasa Reparasi dan Pemasangan Mesin dan Peralatan",true,true,2
-LU,LU.D,,0,320,Pengadaan Listrik dan Gas,false,true,2
-LU,LU.D.1,LU.D,1,330,Ketenagalistrikan,true,true,2
-LU,LU.D.2,LU.D,1,340,Pengadaan Gas dan Produksi Es,true,true,2
-LU,LU.E,,0,350,"Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang",true,true,2
-LU,LU.F,,0,360,Konstruksi,true,true,2
-LU,LU.G,,0,370,"Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor",false,true,2
-LU,LU.G.1,LU.G,1,380,"Perdagangan Mobil, Sepeda Motor dan Reparasinya",true,true,2
-LU,LU.G.2,LU.G,1,390,"Perdagangan Besar dan Eceran, Bukan Mobil dan Sepeda Motor",true,true,2
-LU,LU.H,,0,400,Transportasi dan Pergudangan,false,true,2
-LU,LU.H.1,LU.H,1,410,Angkutan Rel,true,true,2
-LU,LU.H.2,LU.H,1,420,Angkutan Darat,true,true,2
-LU,LU.H.3,LU.H,1,430,Angkutan Laut,true,true,2
-LU,LU.H.4,LU.H,1,440,"Angkutan Sungai, Danau dan Penyeberangan",true,true,2
-LU,LU.H.5,LU.H,1,450,Angkutan Udara,true,true,2
-LU,LU.H.6,LU.H,1,460,"Pergudangan dan Jasa Penunjang Angkutan; Pos dan Kurir",true,true,2
-LU,LU.I,,0,470,Penyediaan Akomodasi dan Makan Minum,false,true,2
-LU,LU.I.1,LU.I,1,480,Penyediaan Akomodasi,true,true,2
-LU,LU.I.2,LU.I,1,490,Penyediaan Makan Minum,true,true,2
-LU,LU.J,,0,500,Informasi dan Komunikasi,true,true,2
-LU,LU.K,,0,510,Jasa Keuangan dan Asuransi,false,true,2
-LU,LU.K.1,LU.K,1,520,Jasa Perantara Keuangan,true,true,2
-LU,LU.K.2,LU.K,1,530,Asuransi dan Dana Pensiun,true,true,2
-LU,LU.K.3,LU.K,1,540,Jasa Keuangan Lainnya,true,true,2
-LU,LU.K.4,LU.K,1,550,Jasa Penunjang Keuangan,true,true,2
-LU,LU.L,,0,560,Real Estat,true,true,2
-LU,"LU.M,N",,0,570,Jasa Perusahaan,true,true,2
-LU,LU.O,,0,580,"Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib",true,true,2
-LU,LU.P,,0,590,Jasa Pendidikan,true,true,2
-LU,LU.Q,,0,600,Jasa Kesehatan dan Kegiatan Sosial,true,true,2
-LU,"LU.R,S,T,U",,0,610,Jasa Lainnya,true,true,2
-EXP,EXP.1,,0,620,Pengeluaran Konsumsi Rumah Tangga,false,true,2
-EXP,EXP.1.a,EXP.1,1,630,"Makanan dan Minuman, Selain Restoran",true,true,2
-EXP,EXP.1.b,EXP.1,1,640,"Pakaian, Alas Kaki dan Jasa Perawatannya",true,true,2
-EXP,EXP.1.c,EXP.1,1,650,Perumahan dan Perlengkapan Rumah Tangga,true,true,2
-EXP,EXP.1.d,EXP.1,1,660,Kesehatan dan Pendidikan,true,true,2
-EXP,EXP.1.e,EXP.1,1,670,Transportasi dan Komunikasi,true,true,2
-EXP,EXP.1.f,EXP.1,1,680,Restoran dan Hotel,true,true,2
-EXP,EXP.1.g,EXP.1,1,690,Lainnya,true,true,2
-EXP,EXP.2,,0,700,Pengeluaran Konsumsi LNPRT,true,true,2
-EXP,EXP.3,,0,710,Pengeluaran Konsumsi Pemerintah,false,true,2
-EXP,EXP.3.a,EXP.3,1,720,Konsumsi Kolektif,true,true,2
-EXP,EXP.3.b,EXP.3,1,730,Konsumsi Individu,true,true,2
-EXP,EXP.4,,0,740,Pembentukan Modal Tetap Bruto,false,true,2
-EXP,EXP.4.a,EXP.4,1,750,Bangunan,true,true,2
-EXP,EXP.4.b,EXP.4,1,760,Mesin dan Perlengkapan,true,true,2
-EXP,EXP.4.c,EXP.4,1,770,Kendaraan,true,true,2
-EXP,EXP.4.d,EXP.4,1,780,Peralatan Lainnya,true,true,2
-EXP,EXP.4.e,EXP.4,1,790,Cultivated Biological Resources (CBR),true,true,2
-EXP,EXP.4.f,EXP.4,1,800,Produk Kekayaan Intelektual,true,true,2
-EXP,EXP.5,,0,810,Perubahan Inventori,true,true,2
-EXP,EXP.6,,0,820,Ekspor Barang dan Jasa,false,true,2
-EXP,EXP.6.a,EXP.6,1,830,Barang,false,true,2
-EXP,EXP.6.a.1,EXP.6.a,2,840,Barang Nonmigas,true,true,2
-EXP,EXP.6.a.2,EXP.6.a,2,850,Barang Migas,true,true,2
-EXP,EXP.6.b,EXP.6,1,860,Jasa,true,true,2
-EXP,EXP.7,,0,870,Dikurangi Impor Barang dan Jasa,false,true,2
-EXP,EXP.7.a,EXP.7,1,880,Barang,false,true,2
-EXP,EXP.7.a.1,EXP.7.a,2,890,Barang Nonmigas,true,true,2
-EXP,EXP.7.a.2,EXP.7.a,2,900,Barang Migas,true,true,2
-EXP,EXP.7.b,EXP.7,1,910,Jasa,true,true,2
+dimension,taxonomy_code,parent_code,level,sort_order,label,is_leaf,selectable
+LU,LU.A,,0,10,"Pertanian, Kehutanan dan Perikanan",false,true
+LU,LU.A.1,LU.A,1,20,"Pertanian, Peternakan, Perburuan dan Jasa Pertanian",false,true
+LU,LU.A.1.a,LU.A.1,2,30,Tanaman Pangan,true,true
+LU,LU.A.1.b,LU.A.1,2,40,Tanaman Hortikultura,true,true
+LU,LU.A.1.c,LU.A.1,2,50,Tanaman Perkebunan,true,true
+LU,LU.A.1.d,LU.A.1,2,60,Peternakan,true,true
+LU,LU.A.1.e,LU.A.1,2,70,Jasa Pertanian dan Perburuan,true,true
+LU,LU.A.2,LU.A,1,80,Kehutanan dan Penebangan Kayu,true,true
+LU,LU.A.3,LU.A,1,90,Perikanan,true,true
+LU,LU.B,,0,100,Pertambangan dan Penggalian,false,true
+LU,LU.B.1,LU.B,1,110,"Pertambangan Minyak, Gas dan Panas Bumi",true,true
+LU,LU.B.2,LU.B,1,120,Pertambangan Batubara dan Lignit,true,true
+LU,LU.B.3,LU.B,1,130,Pertambangan Bijih Logam,true,true
+LU,LU.B.4,LU.B,1,140,Pertambangan dan Penggalian Lainnya,true,true
+LU,LU.C,,0,150,Industri Pengolahan,false,true
+LU,LU.C.1,LU.C,1,160,Industri Batubara dan Pengilangan Migas,true,true
+LU,LU.C.2,LU.C,1,170,Industri Makanan dan Minuman,true,true
+LU,LU.C.3,LU.C,1,180,Industri Pengolahan Tembakau,true,true
+LU,LU.C.4,LU.C,1,190,Industri Tekstil dan Pakaian Jadi,true,true
+LU,LU.C.5,LU.C,1,200,"Industri Kulit, Barang dari Kulit dan Alas Kaki",true,true
+LU,LU.C.6,LU.C,1,210,"Industri Kayu, Barang dari Kayu dan Gabus dan Barang Anyaman dari Bambu, Rotan dan Sejenisnya",true,true
+LU,LU.C.7,LU.C,1,220,"Industri Kertas dan Barang dari Kertas; Percetakan dan Reproduksi Media Rekaman",true,true
+LU,LU.C.8,LU.C,1,230,"Industri Kimia, Farmasi dan Obat Tradisional",true,true
+LU,LU.C.9,LU.C,1,240,"Industri Karet, Barang dari Karet dan Plastik",true,true
+LU,LU.C.10,LU.C,1,250,Industri Barang Galian Bukan Logam,true,true
+LU,LU.C.11,LU.C,1,260,Industri Logam Dasar,true,true
+LU,LU.C.12,LU.C,1,270,"Industri Barang Logam; Komputer, Barang Elektronik, Optik; dan Peralatan Listrik",true,true
+LU,LU.C.13,LU.C,1,280,Industri Mesin dan Perlengkapan,true,true
+LU,LU.C.14,LU.C,1,290,Industri Alat Angkutan,true,true
+LU,LU.C.15,LU.C,1,300,Industri Furnitur,true,true
+LU,LU.C.16,LU.C,1,310,"Industri Pengolahan Lainnya; Jasa Reparasi dan Pemasangan Mesin dan Peralatan",true,true
+LU,LU.D,,0,320,Pengadaan Listrik dan Gas,false,true
+LU,LU.D.1,LU.D,1,330,Ketenagalistrikan,true,true
+LU,LU.D.2,LU.D,1,340,Pengadaan Gas dan Produksi Es,true,true
+LU,LU.E,,0,350,"Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang",true,true
+LU,LU.F,,0,360,Konstruksi,true,true
+LU,LU.G,,0,370,"Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor",false,true
+LU,LU.G.1,LU.G,1,380,"Perdagangan Mobil, Sepeda Motor dan Reparasinya",true,true
+LU,LU.G.2,LU.G,1,390,"Perdagangan Besar dan Eceran, Bukan Mobil dan Sepeda Motor",true,true
+LU,LU.H,,0,400,Transportasi dan Pergudangan,false,true
+LU,LU.H.1,LU.H,1,410,Angkutan Rel,true,true
+LU,LU.H.2,LU.H,1,420,Angkutan Darat,true,true
+LU,LU.H.3,LU.H,1,430,Angkutan Laut,true,true
+LU,LU.H.4,LU.H,1,440,"Angkutan Sungai, Danau dan Penyeberangan",true,true
+LU,LU.H.5,LU.H,1,450,Angkutan Udara,true,true
+LU,LU.H.6,LU.H,1,460,"Pergudangan dan Jasa Penunjang Angkutan; Pos dan Kurir",true,true
+LU,LU.I,,0,470,Penyediaan Akomodasi dan Makan Minum,false,true
+LU,LU.I.1,LU.I,1,480,Penyediaan Akomodasi,true,true
+LU,LU.I.2,LU.I,1,490,Penyediaan Makan Minum,true,true
+LU,LU.J,,0,500,Informasi dan Komunikasi,true,true
+LU,LU.K,,0,510,Jasa Keuangan dan Asuransi,false,true
+LU,LU.K.1,LU.K,1,520,Jasa Perantara Keuangan,true,true
+LU,LU.K.2,LU.K,1,530,Asuransi dan Dana Pensiun,true,true
+LU,LU.K.3,LU.K,1,540,Jasa Keuangan Lainnya,true,true
+LU,LU.K.4,LU.K,1,550,Jasa Penunjang Keuangan,true,true
+LU,LU.L,,0,560,Real Estat,true,true
+LU,"LU.M,N",,0,570,Jasa Perusahaan,true,true
+LU,LU.O,,0,580,"Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib",true,true
+LU,LU.P,,0,590,Jasa Pendidikan,true,true
+LU,LU.Q,,0,600,Jasa Kesehatan dan Kegiatan Sosial,true,true
+LU,"LU.R,S,T,U",,0,610,Jasa Lainnya,true,true
+EXP,EXP.1,,0,620,Pengeluaran Konsumsi Rumah Tangga,false,true
+EXP,EXP.1.a,EXP.1,1,630,"Makanan dan Minuman, Selain Restoran",true,true
+EXP,EXP.1.b,EXP.1,1,640,"Pakaian, Alas Kaki dan Jasa Perawatannya",true,true
+EXP,EXP.1.c,EXP.1,1,650,Perumahan dan Perlengkapan Rumah Tangga,true,true
+EXP,EXP.1.d,EXP.1,1,660,Kesehatan dan Pendidikan,true,true
+EXP,EXP.1.e,EXP.1,1,670,Transportasi dan Komunikasi,true,true
+EXP,EXP.1.f,EXP.1,1,680,Restoran dan Hotel,true,true
+EXP,EXP.1.g,EXP.1,1,690,Lainnya,true,true
+EXP,EXP.2,,0,700,Pengeluaran Konsumsi LNPRT,true,true
+EXP,EXP.3,,0,710,Pengeluaran Konsumsi Pemerintah,false,true
+EXP,EXP.3.a,EXP.3,1,720,Konsumsi Kolektif,true,true
+EXP,EXP.3.b,EXP.3,1,730,Konsumsi Individu,true,true
+EXP,EXP.4,,0,740,Pembentukan Modal Tetap Bruto,false,true
+EXP,EXP.4.a,EXP.4,1,750,Bangunan,true,true
+EXP,EXP.4.b,EXP.4,1,760,Mesin dan Perlengkapan,true,true
+EXP,EXP.4.c,EXP.4,1,770,Kendaraan,true,true
+EXP,EXP.4.d,EXP.4,1,780,Peralatan Lainnya,true,true
+EXP,EXP.4.e,EXP.4,1,790,Cultivated Biological Resources (CBR),true,true
+EXP,EXP.4.f,EXP.4,1,800,Produk Kekayaan Intelektual,true,true
+EXP,EXP.5,,0,810,Perubahan Inventori,true,true
+EXP,EXP.6,,0,820,Ekspor Barang dan Jasa,false,true
+EXP,EXP.6.a,EXP.6,1,830,Barang,false,true
+EXP,EXP.6.a.1,EXP.6.a,2,840,Barang Nonmigas,true,true
+EXP,EXP.6.a.2,EXP.6.a,2,850,Barang Migas,true,true
+EXP,EXP.6.b,EXP.6,1,860,Jasa,true,true
+EXP,EXP.7,,0,870,Dikurangi Impor Barang dan Jasa,false,true
+EXP,EXP.7.a,EXP.7,1,880,Barang,false,true
+EXP,EXP.7.a.1,EXP.7.a,2,890,Barang Nonmigas,true,true
+EXP,EXP.7.a.2,EXP.7.a,2,900,Barang Migas,true,true
+EXP,EXP.7.b,EXP.7,1,910,Jasa,true,true

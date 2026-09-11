@@ -1,15 +1,6 @@
 .venv/
-venv/
 __pycache__/
-*.pyc
 .pytest_cache/
-.coverage
-
+*.py[cod]
 .streamlit/secrets.toml
-
-.env
-.env.*
-
-.DS_Store
-.vscode/
-.idea/
+.codex/

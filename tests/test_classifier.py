@@ -1,8 +1,15 @@
+import pandas as pd
+
 from src.classifier import classify_text
 
 
 def by_code(text, config):
-    return {item.taxonomy_code: item for item in classify_text(text, config.taxonomy, config.keywords)}
+    return {
+        item.taxonomy_code: item
+        for item in classify_text(
+            text, config.taxonomy, config.classification_keywords, config.global_excludes,
+        )
+    }
 
 
 def test_include_and_negative(config):
@@ -42,3 +49,24 @@ def test_neutral_without_direction(config):
 def test_tied_impact_is_neutral(config):
     result = by_code("Panen raya tetapi gagal panen juga terjadi pada produksi padi", config)
     assert result["LU.A.1.a"].impact == "Netral"
+
+
+def test_global_exclude_prevents_all_classification(config):
+    assert by_code("Kecelakaan bus di Lombok Tengah mengganggu angkutan darat", config) == {}
+
+
+def test_token_matching_respects_word_boundaries(config):
+    result = by_code("Pengembangan perbankan digital di Lombok Tengah", config)
+    assert "LU.K.1" not in result
+
+
+def test_search_keyword_alone_is_not_classification_evidence(config):
+    rules = config.classification_keywords.copy()
+    rules.loc[rules["taxonomy_code"] == "LU.F", "include_keywords"] = "evidence khusus"
+    result = classify_text(
+        "Pembangunan jalan di Lombok Tengah",
+        config.taxonomy,
+        rules,
+        pd.DataFrame(columns=["keyword", "active"]),
+    )
+    assert "LU.F" not in {item.taxonomy_code for item in result}

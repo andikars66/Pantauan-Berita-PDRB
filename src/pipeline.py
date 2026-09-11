@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
+from queue import Queue, Empty
 from datetime import date, datetime
 from typing import Any, Callable
 
@@ -59,7 +61,12 @@ def _normalize_and_classify(
         if not geo_ok:
             continue
         diagnostic["geo"] += 1
-        classifications = classify_text(classification_text, config.taxonomy, config.keywords)
+        classifications = classify_text(
+            classification_text,
+            config.taxonomy,
+            config.classification_keywords,
+            config.global_excludes,
+        )
         labels = "; ".join(f"{item.taxonomy_code} — {item.label}" for item in classifications)
         impacts = "; ".join(f"{item.taxonomy_code}={item.impact}" for item in classifications)
         raw_rows.append({
@@ -106,10 +113,17 @@ def run_pipeline(
     run_date: date | None = None,
     progress: Callable[[int, str], None] | None = None,
     portal_max_pages: int | None = None,
+    selected_sources: list[str] | None = None,
 ) -> dict[str, Any]:
     run_date = run_date or today_wita()
     if not selected:
         raise ValueError("Pilih minimal satu taxonomy sebelum memulai.")
+    available_sources = ["serper", *config.portals.loc[config.portals["active"], "id"].tolist()]
+    sources = available_sources if selected_sources is None else list(dict.fromkeys(selected_sources))
+    if not sources:
+        raise ValueError("Pilih minimal satu sumber berita.")
+    if set(sources) - set(available_sources):
+        raise ValueError("Sumber berita pilihan tidak valid atau tidak aktif.")
     start, end = quarter_bounds(year, quarter, run_date)
     expanded = expand_selection(selected, config.taxonomy)
     emit = progress or (lambda _value, _label: None)
@@ -117,50 +131,62 @@ def run_pipeline(
     statuses: list[dict[str, Any]] = []
 
     emit(5, "Persiapan")
-    plan = generate_query_plan(selected, config.taxonomy, config.keywords, start, end)
-    emit(15, "Serper")
+    plan = (generate_query_plan(selected, config.taxonomy, config.serper_keywords, start, end)
+            if "serper" in sources else [])
+    emit(15, "Pengumpulan berita")
     serper = SerperClient(serper_keys or [])
-    try:
-        serper_records = serper.collect(plan, lambda message: emit(25, message))
-        records.extend(serper_records)
-        statuses.append(_source_status("Serper", "Berhasil"))
-        statuses[-1]["Ditemukan"] = len(serper_records)
-        if serper.diagnostics["failed_queries"] or serper.diagnostics["malformed"]:
-            statuses[-1]["Status"] = "Warning"
-            statuses[-1]["Warning/Error"] = (
-                f'{serper.diagnostics["failed_queries"]} query gagal; '
-                f'{serper.diagnostics["malformed"]} respons malformed.'
-            )
-    except SerperError as exc:
-        LOGGER.warning("Serper source failed: %s", type(exc).__name__)
-        statuses.append(_source_status("Serper", "Gagal", str(exc)))
-    except Exception as exc:
-        LOGGER.exception("Unexpected Serper failure")
-        statuses.append(_source_status("Serper", "Gagal", f"Kesalahan Serper: {type(exc).__name__}"))
+    messages: Queue[str] = Queue()
 
-    portal_rows = config.portals[config.portals["active"]]
-    stages = {"inside_lombok": (38, "Inside Lombok"), "lombok_post": (52, "Lombok Post")}
-    for portal in portal_rows.itertuples():
-        value, label = stages[portal.id]
-        emit(value, label)
+    def collect_serper():
         try:
-            found, source_status = crawl_portal(
+            found = serper.collect(plan, messages.put)
+            status = _source_status("Serper", "Berhasil")
+            status["Ditemukan"] = len(found)
+            if serper.diagnostics["failed_queries"] or serper.diagnostics["malformed"]:
+                status["Status"] = "Warning"
+                status["Warning/Error"] = (
+                    f'{serper.diagnostics["failed_queries"]} query gagal; '
+                    f'{serper.diagnostics["malformed"]} respons malformed.'
+                )
+            return found, status
+        except SerperError as exc:
+            return [], _source_status("Serper", "Gagal", str(exc))
+        except Exception as exc:
+            LOGGER.warning("Unexpected Serper failure: %s", type(exc).__name__)
+            return [], _source_status("Serper", "Gagal", f"Kesalahan Serper: {type(exc).__name__}")
+
+    def collect_portal(portal):
+        try:
+            return crawl_portal(
                 portal.id, portal.name, portal.url, start, end, run_date,
-                max_pages=(
-                    portal_max_pages
-                    if portal_max_pages is not None
-                    else int(getattr(portal, "max_pages", 200))
-                ),
-                progress=lambda message, value=value: emit(value, message),
+                max_pages=(portal_max_pages if portal_max_pages is not None
+                           else int(getattr(portal, "max_pages", 200))),
+                progress=messages.put,
             )
+        except PortalScrapingError as exc:
+            return [], _source_status(portal.name, "Gagal", str(exc))
+        except Exception as exc:
+            LOGGER.warning("Portal %s failed: %s", portal.id, type(exc).__name__)
+            return [], _source_status(portal.name, "Gagal", f"Kesalahan parser: {type(exc).__name__}")
+
+    # One sequential crawler per host; at most four source jobs run concurrently.
+    # Streamlit callbacks execute only on this caller thread, never on workers.
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(collect_serper)] if "serper" in sources else []
+        futures.extend(executor.submit(collect_portal, portal)
+                       for portal in config.portals[config.portals["active"] & config.portals["id"].isin(sources)].itertuples())
+        while not all(future.done() for future in futures):
+            try:
+                message = messages.get(timeout=0.1)
+                completed = sum(future.done() for future in futures)
+                emit(15 + int(48 * completed / len(futures)), message)
+            except Empty:
+                pass
+        # Preserve configuration/query order regardless of response timing.
+        for future in futures:
+            found, source_status = future.result()
             records.extend(found)
             statuses.append(source_status)
-        except PortalScrapingError as exc:
-            LOGGER.warning("Portal %s failed: %s", portal.id, type(exc).__name__)
-            statuses.append(_source_status(portal.name, "Gagal", str(exc)))
-        except Exception as exc:
-            LOGGER.exception("Unexpected portal failure for %s", portal.id)
-            statuses.append(_source_status(portal.name, "Gagal", f"Kesalahan parser: {type(exc).__name__}"))
 
     emit(66, "Normalisasi")
     raw, classifications, record_diagnostics = _normalize_and_classify(records, config, start, end, run_date)
@@ -205,6 +231,7 @@ def run_pipeline(
         "metadata": {
             "year": year, "quarter": quarter, "start_date": start, "end_date": end,
             "run_at": datetime.now(WITA), "status": run_status,
+            "selected_sources": sources,
             "selected_original": selected, "selected_expanded": expanded,
         },
         "raw_df": raw,

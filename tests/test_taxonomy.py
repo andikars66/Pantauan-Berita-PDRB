@@ -2,7 +2,8 @@ import pandas as pd
 import pytest
 
 from src.config_loader import (
-    ConfigError, descendants, expand_selection, update_hierarchical_selection, validate_taxonomy,
+    ConfigError, descendants, expand_selection, query_targets, update_hierarchical_selection,
+    validate_serper_keywords, validate_taxonomy,
 )
 
 
@@ -29,6 +30,11 @@ def test_single_child_does_not_expand_siblings(config):
     assert expand_selection(["LU.A.1.a"], config.taxonomy) == ["LU.A.1.a"]
 
 
+def test_serper_query_targets_keep_highest_selected_parent(config):
+    selected = expand_selection(["LU.A"], config.taxonomy)
+    assert query_targets(selected, config.taxonomy) == ["LU.A"]
+
+
 def test_parent_checkbox_selects_descendants_and_child_clear_releases_parent(config):
     selected = update_hierarchical_selection([], "LU.A.1", True, config.taxonomy)
     assert selected == [
@@ -44,7 +50,45 @@ def test_invalid_parent_is_detected():
     frame = pd.DataFrame([{
         "dimension": "LU", "taxonomy_code": "LU.X", "parent_code": "LU.MISSING",
         "level": "1", "sort_order": "1", "label": "X", "is_leaf": "true",
-        "selectable": "true", "min_include_score": "1",
+        "selectable": "true",
     }])
     with pytest.raises(ConfigError, match="parent_code tidak ditemukan"):
         validate_taxonomy(frame)
+
+
+def test_serper_parent_must_represent_each_child(config):
+    keywords = config.serper_keywords.copy()
+    keywords = keywords[
+        ~(
+            (keywords["taxonomy_code"] == "LU.A")
+            & keywords["keyword"].isin({"perikanan", "nelayan"})
+        )
+    ]
+    with pytest.raises(ConfigError, match="LU.A->LU.A.3"):
+        validate_serper_keywords(keywords, config.taxonomy)
+
+
+def test_serper_leaf_has_maximum_ten_keywords(config):
+    keywords = config.serper_keywords.copy()
+    extras = pd.DataFrame([
+        {"taxonomy_code": "LU.F", "keyword": f"tambahan konstruksi {index}",
+         "priority": 90 + index, "active": True}
+        for index in range(4)
+    ])
+    keywords = pd.concat([keywords, extras], ignore_index=True)
+    with pytest.raises(ConfigError, match="leaf maksimal"):
+        validate_serper_keywords(keywords, config.taxonomy)
+
+
+def test_comma_keyword_lists_and_legacy_delimiter_rejection(config):
+    from src.config_loader import validate_classification_keywords, ConfigError
+    from src.classifier import _keyword_terms
+    import pytest
+    assert _keyword_terms(" padi, jagung, gagal panen, ") == ["padi", "jagung", "gagal panen"]
+    rules = config.classification_keywords.copy()
+    rules.loc[0, "include_keywords"] = "padi|jagung"
+    with pytest.raises(ConfigError, match="gunakan koma"):
+        validate_classification_keywords(rules, config.taxonomy)
+    rules.loc[0, "include_keywords"] = "padi, PADI"
+    with pytest.raises(ConfigError, match="duplikat"):
+        validate_classification_keywords(rules, config.taxonomy)

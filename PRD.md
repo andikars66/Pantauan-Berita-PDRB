@@ -1,8 +1,8 @@
 # PRD — Sistem Pantauan Berita PDRB Lombok Tengah
 
 **Status:** Final requirements for MVP  
-**Versi:** 1.0  
-**Tanggal:** 6 September 2026  
+**Versi:** 1.1
+**Tanggal:** 11 September 2026
 **Target implementasi:** Python + Streamlit Community Cloud  
 **Bahasa UI:** Indonesia  
 **Target pengguna:** Tim kecil internal (<5 pengguna)  
@@ -253,7 +253,6 @@ Minimal:
 | `label` | nama resmi |
 | `is_leaf` | boolean |
 | `selectable` | boolean |
-| `min_include_score` | threshold klasifikasi, default dapat 1 |
 
 Internal code harus unik lintas dimensi. Prefix internal `LU.` dan `EXP.` diperbolehkan.
 
@@ -459,45 +458,61 @@ Tetap lakukan classification ekonomi; source context hanya membantu relevansi wi
 
 # 11. Keyword Configuration
 
-Gunakan `config/keywords.csv`.
+Keyword pencarian Serper dan keyword klasifikasi harus berada dalam file terpisah. Perubahan pada keyword pencarian tidak boleh mengubah evidence klasifikasi, dan keyword klasifikasi tidak boleh otomatis menjadi query Serper.
 
-## 11.1 Skema
+## 11.1 `serper_keywords.csv`
 
-Minimal:
+Gunakan format panjang satu keyword per row:
+
+| Kolom | Keterangan |
+|---|---|
+| `taxonomy_code` | kode taxonomy target query |
+| `keyword` | term/frasa pencarian yang kuat |
+| `priority` | integer positif; angka lebih kecil dipakai lebih dahulu |
+| `active` | boolean |
+
+Setiap taxonomy selectable minimal memiliki tiga keyword aktif. Taxonomy leaf maksimal memiliki sepuluh keyword aktif. Keyword parent boleh lebih dari sepuluh, dengan syarat setiap direct child diwakili oleh minimal satu keyword parent yang sama dengan keyword child tersebut.
+
+## 11.2 `classification_keywords.csv`
+
+Gunakan satu row per taxonomy:
 
 | Kolom | Keterangan |
 |---|---|
 | `taxonomy_code` | kode taxonomy |
-| `keyword_type` | `include`, `exclude`, `positive`, `negative` |
-| `keyword` | term/frasa |
-| `weight` | integer/float positif |
-| `match_mode` | `phrase` atau `token` |
-| `serper_query` | boolean, hanya relevan untuk `include` |
+| `include_keywords` | daftar term/frasa include dipisahkan `|` |
+| `exclude_keywords` | daftar veto khusus taxonomy dipisahkan `|` |
+| `positive_keywords` | daftar indikator positif khusus taxonomy dipisahkan `|` |
+| `negative_keywords` | daftar indikator negatif khusus taxonomy dipisahkan `|` |
 
-Kolom tambahan kecil diperbolehkan jika benar-benar dibutuhkan tanpa membuat konfigurasi kompleks.
+Minimal satu include term harus tersedia untuk setiap taxonomy selectable. Satu include term yang match cukup menjadikan node kandidat, selama tidak diveto oleh exclude taxonomy.
 
-## 11.2 Filosofi rule
+## 11.3 `global_exclude_keywords.csv`
+
+Gunakan format:
+
+| Kolom | Keterangan |
+|---|---|
+| `keyword` | term/frasa yang mengecualikan artikel dari seluruh klasifikasi |
+| `active` | boolean |
+
+Jika global exclude match, artikel tetap boleh berada di Raw Result tetapi tidak boleh memperoleh classification apa pun.
+
+## 11.4 Filosofi rule
 
 - Precision > recall.
 - Hindari keyword terlalu umum tanpa konteks.
 - Gunakan frasa spesifik bila memungkinkan.
-- Gunakan `exclude` untuk homonim/false positive.
-- Directional keyword sebaiknya bersifat taxonomy-specific.
-- Keyword parent boleh digunakan sebagai fallback/inheritance bila diperlukan.
+- Exclude taxonomy hanya memveto taxonomy terkait.
+- Global exclude memveto seluruh taxonomy.
+- Directional keyword harus taxonomy-specific.
 - Semua rule harus dapat diedit tanpa mengubah Python.
 
 Contoh konseptual:
 
 ```csv
-taxonomy_code,keyword_type,keyword,weight,match_mode,serper_query
-LU.A.1.a,include,gagal panen,3,phrase,true
-LU.A.1.a,include,produksi padi,3,phrase,true
-LU.A.1.a,include,sawah,1,token,false
-LU.A.1.a,positive,panen raya,3,phrase,false
-LU.A.1.a,positive,produksi meningkat,2,phrase,false
-LU.A.1.a,negative,gagal panen,3,phrase,false
-LU.A.1.a,negative,produksi turun,2,phrase,false
-LU.K.1,exclude,bank sampah,5,phrase,false
+taxonomy_code,include_keywords,exclude_keywords,positive_keywords,negative_keywords
+LU.A.1.a,padi|jagung|gabah|panen|sawah,ikan|lele,panen raya|produksi padi meningkat,gagal panen|kekeringan
 ```
 
 ---
@@ -512,9 +527,7 @@ Sebelum matching:
 4. punctuation normalization seperlunya;
 5. jangan melakukan stemming agresif yang dapat menambah false positive.
 
-`phrase` melakukan pencocokan frasa normalized.
-
-`token` harus menghormati batas kata agar contoh seperti keyword `bank` tidak salah match ke bagian substring kata lain.
+Term satu kata maupun frasa harus menghormati batas kata agar keyword `bank` tidak salah match ke bagian substring kata lain. Frasa seperti `gagal panen` dicocokkan setelah normalisasi.
 
 Matching harus case-insensitive.
 
@@ -547,19 +560,16 @@ Tujuan:
 - Satu artikel dapat sekaligus diklasifikasikan sebagai Lapangan Usaha dan Pengeluaran.
 - Main Result kemudian hanya mengambil classification yang berada pada selection user.
 
-## 13.3 Include score
+## 13.3 Include dan exclusion
 
-Untuk setiap taxonomy node:
+Sebelum mengevaluasi taxonomy, periksa global exclude. Jika minimal satu global exclude match, hasil klasifikasi artikel adalah kosong.
 
-`include_score = sum(weight setiap include rule yang match)`
+Untuk setiap taxonomy node, node lolos jika:
 
-Node lolos jika:
+- minimal satu `include_keywords` match; dan
+- tidak ada `exclude_keywords` taxonomy tersebut yang match.
 
-- minimal satu include rule match; dan
-- `include_score >= min_include_score`; dan
-- tidak dibatalkan oleh exclusion rule.
-
-`exclude` adalah veto terhadap node terkait bila match.
+`include_score` untuk audit adalah jumlah distinct include term yang match. Exclude taxonomy adalah veto hanya terhadap node terkait.
 
 ## 13.4 Multi-label
 
@@ -590,7 +600,7 @@ maka jangan otomatis menghasilkan tambahan:
 
 hanya karena keyword parent juga match.
 
-Sebaliknya, jika text hanya cukup spesifik untuk level parent dan tidak ada child yang memenuhi threshold, parent boleh menjadi classification.
+Sebaliknya, jika text hanya cocok dengan include term parent dan tidak ada child yang cocok, parent boleh menjadi classification.
 
 Prinsip: **gunakan level terdalam yang didukung evidence**.
 
@@ -618,9 +628,9 @@ Netral bukan error dan bukan “tidak relevan”.
 
 Untuk taxonomy classification yang telah lolos:
 
-`positive_score = sum(weight positive rules yang match)`
+`positive_score = jumlah distinct positive_keywords yang match`
 
-`negative_score = sum(weight negative rules yang match)`
+`negative_score = jumlah distinct negative_keywords yang match`
 
 Decision:
 
@@ -629,11 +639,7 @@ Decision:
 - sama-sama 0 → Netral
 - skor sama → Netral
 
-Jika implementasi inheritance digunakan:
-
-- rule taxonomy paling spesifik lebih diutamakan;
-- ancestor directional rules hanya fallback;
-- jangan menggunakan satu kamus sentiment global tanpa konteks sektor.
+Directional keyword tidak diwariskan dari taxonomy lain dan tidak menggunakan kamus sentiment global.
 
 ## 14.3 Contoh
 
@@ -661,9 +667,10 @@ Serper hanya membuat query berdasarkan **taxonomy yang dipilih user**.
 
 Jika user memilih parent:
 
-- expand ke descendant/leaf query targets.
+- gunakan hanya keyword yang dikonfigurasi pada parent tersebut;
+- jangan membuat query terpisah untuk descendant yang ikut terpilih akibat ekspansi UI.
 
-Untuk taxonomy yang memang tidak memiliki child, node tersebut menjadi query target.
+Jika user hanya memilih child, gunakan keyword child tersebut. Jika beberapa sibling dipilih tanpa parent, masing-masing sibling menjadi query target.
 
 ## 15.2 Keyword query pack
 
@@ -671,16 +678,17 @@ Jangan mengirim satu request untuk setiap keyword.
 
 Untuk setiap query target:
 
-1. pilih include keyword dengan `serper_query=true`;
-2. urutkan berdasarkan weight;
-3. gabungkan beberapa keyword high-precision dengan operator `OR`;
-4. batasi jumlah term per query pack agar query tidak terlalu panjang.
+1. pilih keyword aktif dari `serper_keywords.csv`;
+2. urutkan berdasarkan `priority`;
+3. gabungkan keyword dengan operator `OR`;
+4. bagi keyword menjadi pack maksimal sepuluh term agar query tidak terlalu panjang;
+5. parent dengan lebih dari sepuluh keyword menghasilkan beberapa query pack, seluruhnya tetap memakai keyword parent.
 
 Contoh konseptual:
 
 `("Lombok Tengah" OR "Loteng") ("gagal panen" OR "produksi padi" OR "panen raya")`
 
-Gunakan label taxonomy sebagai fallback hanya bila tidak ada keyword query yang tersedia.
+Tidak ada fallback ke label taxonomy. Kekurangan keyword merupakan configuration error.
 
 ## 15.3 Dua geographic query scope
 
@@ -1268,8 +1276,13 @@ Saat load aplikasi:
 - invalid parent;
 - missing required CSV columns;
 - keyword ke taxonomy code yang tidak ada;
-- invalid keyword type;
-- weight non-numeric.
+- priority Serper invalid;
+- taxonomy dengan keyword Serper kurang dari minimum;
+- taxonomy leaf dengan lebih dari sepuluh keyword Serper;
+- keyword parent yang belum mewakili direct child;
+- taxonomy selectable tanpa include classification;
+- duplicate atau konflik include/exclude;
+- global exclude invalid.
 
 Configuration error yang membuat klasifikasi tidak aman boleh menjadi fatal dengan pesan jelas.
 
@@ -1302,7 +1315,9 @@ project/
 ├── app.py
 ├── config/
 │   ├── taxonomy.csv
-│   ├── keywords.csv
+│   ├── serper_keywords.csv
+│   ├── classification_keywords.csv
+│   ├── global_exclude_keywords.csv
 │   ├── portals.csv
 │   └── geography.csv
 ├── src/
@@ -1423,16 +1438,18 @@ UI hanya menampilkan diagnostic ringkas.
 
 # 35. Initial Keyword Seed
 
-Coding Agent wajib membuat `keywords.csv` awal yang **usable**, bukan file kosong.
+Coding Agent wajib membuat `serper_keywords.csv`, `classification_keywords.csv`, dan `global_exclude_keywords.csv` awal yang **usable**, bukan file kosong.
 
 Namun tidak perlu berusaha membuat kamus sempurna.
 
 Seed harus:
 
-- mencakup seluruh taxonomy selectable;
-- minimal memiliki include keyword yang masuk akal;
+- keyword Serper mencakup seluruh taxonomy selectable;
+- setiap leaf memiliki 3–10 keyword Serper yang kuat;
+- keyword parent boleh lebih banyak dan mewakili setiap direct child;
+- classification minimal memiliki include keyword yang masuk akal;
 - memiliki directional positive/negative rules pada kategori yang jelas;
-- menggunakan exclusion untuk beberapa false-positive obvious;
+- menggunakan exclude taxonomy dan global exclude untuk false-positive yang jelas;
 - conservative/precision-oriented.
 
 Jika taxonomy sangat luas, node yang sulit diberi directional rule tetap boleh menghasilkan `Netral`.
@@ -1473,6 +1490,9 @@ Keyword harus mudah diedit setelah MVP berjalan.
 28. Zero-count selected taxonomy tetap terlihat pada summary/export.
 29. Source failure → partial result + warning.
 30. UI satu halaman.
+31. Keyword Serper terpisah dari keyword klasifikasi.
+32. Parent terpilih memakai keyword parent, bukan query seluruh descendant.
+33. Global exclude mencegah seluruh klasifikasi tetapi record tetap dapat muncul di raw.
 
 ---
 
@@ -1503,7 +1523,7 @@ Masing-masing dimension memiliki aksi pilih semua/hapus semua.
 Run tidak dapat dimulai tanpa minimal satu taxonomy.
 
 ## AC-09 — Serper selected query
-Serper query plan hanya berasal dari taxonomy selected/expanded user.
+Serper query plan hanya memakai `serper_keywords.csv`. Parent terpilih memakai keyword parent dan menekan query descendant; child yang dipilih sendiri memakai keyword child.
 
 ## AC-10 — Serper classification text
 Tidak ada fetching full article untuk hasil Serper; classifier menggunakan title+snippet.
@@ -1518,7 +1538,7 @@ Direct scraper hanya menggunakan Inside Lombok Lombok Tengah dan Lombok Post tag
 Portal crawler berhenti setelah archive melewati batas awal triwulan atau termination guard.
 
 ## AC-14 — Full taxonomy classification
-Raw record diklasifikasikan terhadap seluruh taxonomy aktif.
+Raw record diklasifikasikan terhadap seluruh taxonomy aktif hanya dengan `classification_keywords.csv`. Global exclude menghasilkan classification kosong.
 
 ## AC-15 — Geography
 Bima-only/non-Lombok-Tengah local news tidak masuk sebagai NTB-wide relevant, sedangkan fenomena province-wide NTB dapat masuk.
@@ -1533,7 +1553,7 @@ Satu article dengan tiga classification menghasilkan tiga main rows bila ketigan
 Specific child tidak menghasilkan redundant ancestor row tanpa alasan.
 
 ## AC-19 — Impact
-Positive/negative score tertinggi menentukan impact; tie/no direction = Netral.
+Jumlah positive/negative keyword yang match menentukan impact; tie/no direction = Netral.
 
 ## AC-20 — Source isolation
 Jika satu portal gagal, portal lain/Serper tetap berjalan.
@@ -1612,7 +1632,9 @@ Project dianggap selesai apabila:
 - [ ] taxonomy Pengeluaran lengkap;
 - [ ] hierarchy selection bekerja;
 - [ ] configuration CSV tersedia dan tervalidasi;
-- [ ] keyword seed usable tersedia;
+- [ ] Serper keyword seed usable tersedia dan terpisah;
+- [ ] classification keyword seed usable tersedia;
+- [ ] global exclude tersedia;
 - [ ] geography config tersedia;
 - [ ] Serper query generation bekerja;
 - [ ] multiple API-key failover bekerja;

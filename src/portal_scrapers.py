@@ -32,7 +32,7 @@ def build_session() -> requests.Session:
     )
     session.mount("https://", HTTPAdapter(max_retries=retry))
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 (compatible; PantauanBeritaPDRB/1.0; +Streamlit)",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
         "Accept-Language": "id-ID,id;q=0.9,en;q=0.6",
     })
     return session
@@ -60,7 +60,7 @@ def _parse_cards(html: str, base_url: str, card_selectors: tuple[str, ...]) -> l
     for card in cards:
         title_node = None
         for selector in (
-            ".entry-title a", "h3.td-module-title a", "a.post-title",
+            ".entry-title a", "h3.td-module-title a", ".post-title a", "a.post-title",
             "a.latest__link", "h1 a", "h2 a", "h3 a", "h4 a", "a",
         ):
             title_node = card.select_one(selector)
@@ -72,13 +72,13 @@ def _parse_cards(html: str, base_url: str, card_selectors: tuple[str, ...]) -> l
         href = title_node.get("href") or ""
         date_raw = _first_text(card, (
             "time[datetime]", "time", ".jeg_meta_date", ".entry-date", ".post-date",
-            ".latest__date", ".date", "span[class*='date']", "div[class*='date']",
+            ".latest__date", ".post-on", ".date", "span[class*='date']", "div[class*='date']",
         ))
         snippet = _first_text(card, (
             ".jeg_post_excerpt", ".entry-summary", ".post-excerpt", ".latest__desc",
             ".td-excerpt", ".description", "p",
         ))
-        if not title or not href or not date_raw:
+        if not title or not href:
             continue
         key = (title.strip(), urljoin(base_url, href))
         if key in seen_nodes:
@@ -171,10 +171,50 @@ def parse_lombok_post(html: str, base_url: str) -> list[dict[str, str]]:
     return items or _parse_json_ld(html, base_url)
 
 
+def parse_radar_mandalika(html: str, base_url: str) -> list[dict[str, str]]:
+    return _parse_cards(html, base_url, ("article.small",))
+
+
+def parse_radar_lombok(html: str, base_url: str) -> list[dict[str, str]]:
+    selector = ".td-ss-main-content .td_module_wrap"
+    if "/page/" not in urlsplit(base_url).path:
+        selector = ".td-big-grid-post, " + selector
+    return _parse_cards(html, base_url, (selector,))
+
+
+def parse_suara_ntb(html: str, base_url: str) -> list[dict[str, str]]:
+    # Include the category's leading grid and archive loop, but exclude the sidebar.
+    selector = ".tdb-category-loop-posts .tdb_module_loop"
+    if "/page/" not in urlsplit(base_url).path:
+        selector = ".td-big-grid-flex-post, " + selector
+    items = _parse_cards(html, base_url, (selector,))
+    for item in items:
+        if not item["date_raw"]:
+            match = re.search(r"/(\d{4})/(\d{2})/(\d{2})/", item["url"])
+            if match:
+                item["date_raw"] = "-".join(match.groups())
+    return items
+
+
+def parse_pemkab_loteng(html: str, base_url: str) -> list[dict[str, str]]:
+    return _parse_cards(html, base_url, ("article:has(.entry-content-2)",))
+
+
+PORTAL_PARSERS = {
+    "inside_lombok": parse_inside_lombok, "lombok_post": parse_lombok_post,
+    "radar_mandalika": parse_radar_mandalika, "radar_lombok": parse_radar_lombok,
+    "suara_ntb": parse_suara_ntb, "pemkab_loteng": parse_pemkab_loteng,
+}
+
+
 def _page_url(portal_id: str, base_url: str, page: int) -> str:
     if page == 1:
         return base_url
-    if portal_id == "inside_lombok":
+    if portal_id == "radar_lombok":
+        return urljoin(base_url.rstrip("/") + "/", f"page/{page}")
+    if portal_id == "pemkab_loteng":
+        return urljoin(base_url.rstrip("/") + "/", str((page - 1) * 15))
+    if portal_id in {"inside_lombok", "radar_mandalika", "radar_lombok", "suara_ntb"}:
         return urljoin(base_url.rstrip("/") + "/", f"page/{page}/")
     parts = urlsplit(base_url)
     query = dict(parse_qsl(parts.query, keep_blank_values=True))
@@ -193,10 +233,13 @@ def crawl_portal(
     max_pages: int = 50,
     progress: Callable[[str], None] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    parsers = {"inside_lombok": parse_inside_lombok, "lombok_post": parse_lombok_post}
+    parsers = PORTAL_PARSERS
     if portal_id not in parsers:
         raise PortalScrapingError(f"Portal tidak didukung: {portal_id}")
-    session = session or build_session()
+    if session is None:
+        with build_session() as owned_session:
+            return crawl_portal(portal_id, name, base_url, start_date, end_date, run_date,
+                                owned_session, max_pages, progress)
     records: list[dict[str, Any]] = []
     status = {
         "Sumber": name, "Status": "Berhasil", "Ditemukan": 0,
@@ -217,12 +260,19 @@ def crawl_portal(
             response = session.get(url, timeout=(5, 20))
             response.raise_for_status()
         except requests.RequestException as exc:
-            raise PortalScrapingError(f"Request gagal pada halaman {page}: {type(exc).__name__}") from exc
-        items = parsers[portal_id](response.text, base_url)
-        # An empty later page is normal termination; an empty first page is a parser/source failure.
+            message = f"Request gagal pada halaman {page}: {type(exc).__name__}"
+            if page == 1:
+                raise PortalScrapingError(message) from None
+            status.update({"Status": "Warning", "Warning/Error": message})
+            break
+        response.encoding = "utf-8"
+        items = parsers[portal_id](response.text, url)
+        # Unrecognized responses must never masquerade as successful empty archives.
         if not items:
             if page == 1:
                 raise PortalScrapingError("Struktur daftar artikel tidak dikenali pada halaman pertama.")
+            status.update({"Status": "Warning", "Warning/Error":
+                           f"Struktur daftar artikel tidak dikenali pada halaman {page}."})
             break
         fingerprint = tuple(item["url"] for item in items)
         if fingerprint in page_fingerprints:
@@ -233,12 +283,38 @@ def crawl_portal(
         status["Ditemukan"] += len(items)
         parsed_dates: list[date] = []
         for item in items:
+            if portal_id == "radar_lombok" and not item.get("date_raw"):
+                try:
+                    detail = session.get(item["url"], timeout=(5, 20))
+                    detail.raise_for_status()
+                    detail.encoding = "utf-8"
+                    soup = BeautifulSoup(detail.text, "html.parser")
+                    item["date_raw"] = _first_text(soup, (
+                        'meta[property="article:published_time"]', 'time[datetime]',
+                    ))
+                except requests.RequestException:
+                    pass  # Count the missing date explicitly below; never infer today's date.
             parsed = parse_news_date(item.get("date_raw"), run_date)
             if parsed is None:
                 status["Gagal Parse Tanggal"] += 1
                 continue
             parsed_dates.append(parsed)
             if start_date <= parsed <= end_date:
+                if portal_id == "pemkab_loteng":
+                    # Archive titles are abbreviated; fetch only in-period details,
+                    # sequentially on the same session to keep one request per host.
+                    try:
+                        detail = session.get(item["url"], timeout=(5, 20))
+                        detail.raise_for_status()
+                        detail.encoding = "utf-8"
+                        soup = BeautifulSoup(detail.text, "html.parser")
+                        headline = soup.select_one(".single-header h2")
+                        if not headline:
+                            raise PortalScrapingError("Judul detail tidak dikenali")
+                        item["title"] = headline.get_text(" ", strip=True)
+                    except (requests.RequestException, PortalScrapingError):
+                        status.update({"Status": "Warning", "Warning/Error":
+                                       "Sebagian detail gagal; menggunakan judul ringkas arsip."})
                 records.append({
                     "record_id": str(uuid4()), "source_type": "portal", "source": name,
                     "title": item["title"], "date_raw": item["date_raw"], "date": parsed,

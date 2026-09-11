@@ -1,0 +1,92 @@
+taxonomy_code,include_keywords,exclude_keywords,positive_keywords,negative_keywords
+LU.A,"sektor pertanian,ekonomi pertanian,hasil pertanian,produksi pertanian",,"produksi pertanian meningkat,panen meningkat","produksi pertanian menurun,kekeringan"
+LU.A.1,"usaha pertanian,petani,sentra pertanian",,,
+LU.A.1.a,"produksi padi,gagal panen,lahan sawah,padi,jagung,kedelai,gabah,panen,benih,pupuk,singkong,gandum,sawah","lele,ikan","panen raya,produksi padi meningkat,hasil panen meningkat","gagal panen,produksi padi turun,kekeringan,serangan hama"
+LU.A.1.b,"produksi hortikultura,petani sayur,panen cabai,bawang,cabai,tomat,sayur,kubis,melon,semangka,kangkung,bayam,wortel,hidroponik,mangga,jeruk,durian,pisang,rambutan,salak,duku,manggis,anggrek,buah,buah-buahan",,"panen melimpah,produksi hortikultura meningkat,harga cabai naik","gagal panen,produksi hortikultura turun,harga cabai anjlok"
+LU.A.1.c,"produksi perkebunan,perkebunan tembakau,petani kopi,tebu,kapas,rami,nilam,sereh,jarak,rosela,kenaf,agave,abaka,sawit,karet,kopi,kakao,teh,lada,pala,cengkeh,kopra,cpo,perkebunan,tembakau",,"produksi meningkat,produksi perkebunan meningkat,harga tembakau naik","produksi menurun,produksi perkebunan turun,gagal panen"
+LU.A.1.d,"populasi ternak,peternak sapi,peternakan ayam,sapi,kambing,ayam,telur,daging,unggas,peternak,domba,babi,itik","kotoran,menu,makanan","populasi meningkat,populasi ternak meningkat,produksi telur meningkat","wabah ternak,kematian ternak,harga pakan naik"
+LU.A.1.e,"jasa pertanian,penyewaan alat pertanian,traktor,alsintan,penyuluh,bajak,cangkul,sabit,senapan,penangkaran",,,
+LU.A.2,"produksi kayu,penebangan kayu,hutan,kehutanan,hasil hutan,kayu bulat",pembalakan liar,produksi kayu meningkat,produksi kayu turun
+LU.A.3,"produksi perikanan,hasil tangkapan ikan,budidaya ikan,ikan,nelayan,tambak,udang,tangkap,budidaya,lele,tuna",,"hasil tangkapan meningkat,produksi ikan meningkat,panen ikan","hasil tangkapan menurun,hasil tangkapan turun,gelombang tinggi"
+LU.B,"sektor pertambangan,tambang,pertambangan,produksi tambang",,,
+LU.B.1,"produksi minyak bumi,panas bumi,minyak bumi,gas bumi,migas",,produksi migas meningkat,produksi migas turun
+LU.B.2,"produksi batubara,tambang lignit,batubara,lignit,tambang batubara",,,
+LU.B.3,"tambang bijih logam,produksi bijih logam,bijih logam,tambang emas,tambang bijih",,,
+LU.B.4,"usaha penggalian,tambang batu,galian pasir,batu kapur,pasir tambang,penggalian batu",,,
+LU.C,"industri pengolahan,pabrik,manufaktur,produk olahan",,industri tumbuh,industri terkontraksi
+LU.C.1,"kilang minyak,industri pengilangan,batubara olahan,produk kilang,pengilangan migas",,,
+LU.C.2,"industri makanan,industri minuman,pabrik makanan,roti,sosis,biskuit,sirup,bir,pengalengan,kecap,saus,mie,wafer,makanan,minuman",,produksi meningkat,produksi menurun
+LU.C.3,"industri tembakau,pabrik rokok,tembakau rajang,oven tembakau,industri rokok",,,
+LU.C.4,"industri tekstil,pabrik pakaian,tekstil,benang,kain,garmen,pakaian,konveksi,baju,celana,tenun,rajut,batik,kaos",,,
+LU.C.5,"industri kulit,pabrik alas kaki,sepatu,tas,penyamakan,jaket,sandal,kets,dompet,pinggang,boot,kulit",,,
+LU.C.6,"industri kayu,kerajinan rotan,kerajinan bambu,triplek,plywood,sawmill,penggergajian,anyaman,rotan,pelet,papan,serbuk,ketupat,anyam",,,
+LU.C.7,"industri kertas,usaha percetakan,kertas,pulp,kardus,tisu,percetakan,penerbitan,majalah,koran,kemasan,karton,buku,box kemasan,brosur,map",,,
+LU.C.8,"industri farmasi,obat tradisional,pupuk,petrokimia,kosmetik,farmasi,obat,jamu,vaksin,kimia,sabun,pestisida,cat",,,
+LU.C.9,"industri karet,industri plastik,ban,vulkanisir,crumb,pvc,plastik,botol,jas,mainan,ember,karet,sedotan",,,
+LU.C.10,"industri semen,industri keramik,semen,keramik,beton,bata,genteng,kaca,porselen,asbes,gips,tegel,bumbungan",,,
+LU.C.11,"industri logam dasar,pabrik baja,baja,aluminium dasar,peleburan logam",,,
+LU.C.12,"industri barang logam,industri elektronik,peralatan listrik,komputer,laptop,paku,seng,kulkas,lampu,baterai,semikonduktor,motherboard,aluminium",,,
+LU.C.13,"industri mesin,pabrik mesin,mesin produksi,peralatan industri",,,
+LU.C.14,"industri alat angkutan,pabrik kendaraan,perakitan kendaraan,karoseri,komponen kendaraan",,,
+LU.C.15,"industri furnitur,produksi mebel,mebel,kursi,meja,lemari,furnitur,springbed,rak,sofa,kasur",,,
+LU.C.16,"jasa reparasi mesin,pemasangan mesin industri,mainan,perhiasan,reparasi,instalasi,daur,perakitan,maintenance,gitar",,,
+LU.D,"pengadaan listrik dan gas,layanan listrik,jaringan gas,energi listrik",,,
+LU.D.1,"produksi listrik,pembangkit listrik,pln,listrik,pltu,plta,plts,pembangkit,gardu,transmisi,blackout,meteran,pemadaman,lampu,penerangan,up3",,pasokan listrik meningkat,pemadaman listrik
+LU.D.2,"pengadaan gas,produksi es,gas kota,jaringan gas,pabrik es",,,
+LU.E,"pengadaan air minum,pengelolaan sampah,pengolahan limbah,pdam,tpa,sampah,limbah,daur,spal,sedot,ipsl,perpipaan,dlh,tps",,kapasitas air meningkat,krisis air bersih
+LU.F,"proyek konstruksi,pembangunan gedung,pembangunan infrastruktur,kontraktor,gedung,tukang,jembatan,infrastruktur,perumahan,arsitektur,bangunan,renovasi,revitalisasi,bale,aspal,diaspal",,"mulai dibangun,proyek dimulai,proyek selesai,pembangunan dipercepat","proyek terhenti,pembangunan tertunda,proyek mangkrak,biaya konstruksi naik"
+LU.G,"sektor perdagangan,aktivitas perdagangan,pasar rakyat,distribusi barang",,,
+LU.G.1,"penjualan mobil,penjualan sepeda motor,bengkel kendaraan,dealer,showroom,bengkel,oli,onderdil,mekanik,servis,sparepart,motor,mobil,kendaraan","rusak,tabrak",penjualan meningkat,penjualan turun
+LU.G.2,"perdagangan eceran,perdagangan besar,penjualan ritel,minimarket,ritel,alfamart,indomaret,grosir,pasar,toko,swalayan,pengeceran,kios,distributor,supermarket,kelontong,elpiji,lpg,cabai,cabe,migor,telur,sembako,beras,pangan,diskopukmperindag,perdagangan,harga,market,komoditas,inflasi,umkm","perdagangan manusia,saham","omzet meningkat,omzet pedagang meningkat,harga stabil","omzet menurun,omzet pedagang turun,harga melonjak"
+LU.H,"sektor transportasi,angkutan,logistik,transportasi umum",,,
+LU.H.1,"angkutan kereta,transportasi rel,mudik,kereta,kai,stasiun,commuter",,,
+LU.H.2,"angkutan darat,transportasi bus,angkutan barang jalan raya,bus,bis,angkot,taksi,damri,terminal,ojek,ojol,logistik,truk,sopir,travel,angkutan,trayek,kendaraan",,,
+LU.H.3,"angkutan laut,transportasi laut,kapal laut,pelabuhan laut,pelayaran",,,
+LU.H.4,"angkutan penyeberangan,kapal feri,pelabuhan penyeberangan,lintasan penyeberangan",,,
+LU.H.5,"angkutan udara,penerbangan komersial,bandara,penerbangan,penumpang pesawat",,penumpang meningkat,penerbangan dibatalkan
+LU.H.6,"jasa pergudangan,jasa kurir,aktivitas pelabuhan,jne,jnt,kurir,logistik,paket,bongkar,muat",,,
+LU.I,"sektor akomodasi dan makan minum,pariwisata,akomodasi wisata,kuliner",,,
+LU.I.1,"tingkat hunian hotel,hotel baru,usaha penginapan,hotel,penginapan,vila,villa,homestay,resor,motel,hostel,wisma,resepsionis,okupansi",,"okupansi meningkat,kunjungan wisatawan meningkat,hotel baru","okupansi turun,hotel tutup"
+LU.I.2,"usaha restoran,usaha rumah makan,industri kuliner,restoran,kafe,warung,katering,kedai,kuliner,chef,pesanan,franchise,menu,mbg,sppg,bergizi,dapur,bgn,makanan,minuman",,"omzet meningkat,omzet restoran meningkat,restoran baru","omzet menurun,omzet restoran turun,restoran tutup"
+LU.J,"sektor informasi dan komunikasi,layanan telekomunikasi,akses internet,telkom,provider,internet,seluler,penyiaran,televisi,radio,film,studio,software,programmer,kuota,wifi,telkomsel,fiber",,pelanggan meningkat,gangguan jaringan
+LU.K,"sektor jasa keuangan,perbankan,pembiayaan,layanan keuangan",,,
+LU.K.1,"kredit perbankan,penyaluran kredit bank,bank,kredit,deposito,tabungan,bca,bri,mandiri,bni,pinjaman,lps,bpr,kur,giro,koperasi,kkmp,kopdes,kdmp,baznas",bank sampah,kredit tumbuh,kredit macet meningkat
+LU.K.2,"premi asuransi,dana pensiun,asuransi,premi,polis,bpjs,ketenagakerjaan,pensiun,taspen,asabri,klaim,aktuaria,pertanggungan,koperasi,kkmp,kopdes,kdmp,retribusi",,,
+LU.K.3,"perusahaan pembiayaan,pegadaian,fintech lending,saham,reksa,bursa,efek,ihsg,sekuritas,broker,obligasi,sbn,fintech,leasing,multifinance",,,
+LU.K.4,"jasa penunjang keuangan,pialang efek,bursa,transaksi,penjaminan",,,
+LU.L,"sektor real estat,penjualan properti,persewaan properti,properti,perumahan,apartemen,pengembang,developer,sewa,pemasaran,agen,tenant,mall",,penjualan properti meningkat,penjualan properti turun
+"LU.M,N","jasa perusahaan,jasa konsultasi bisnis,persewaan alat usaha,reklame,umroh,travel",,,
+LU.O,"belanja administrasi pemerintahan,jaminan sosial wajib,layanan pemerintahan,anggaran,apbd,asn,pppk,p3k,bpbd,bpkpd,bansos,razia,dtks,dinsos,bpnt,patroli,sidak,tpp,casn,sekda",,,
+LU.P,"jasa pendidikan,sekolah swasta,perguruan tinggi,sekolah,universitas,dosen,guru,kampus,mahasiswa,siswa,murid,sbmptn,kurikulum,bimbel,ijazah,spmb,pmb,mapel,bos,pagu,ptn,sd,smp,sma,sdn,smpn,sman,mi,mts,wisuda,dikbud,pendidikan,mbg,sppg",,"jumlah siswa meningkat,sekolah baru","sekolah ditutup,jumlah siswa menurun"
+LU.Q,"layanan kesehatan,rumah sakit,puskesmas,ihc,pasien,panti,rekam,ugd,igd,gizi,jentik,bpjs,pbi,pbd,rsud,vaksin,divaksin,kesehatan,posyandu,pmi,donor,ambulans,ambulance,darah,medical,stunting",,"fasilitas kesehatan baru,jumlah pasien tertangani meningkat","layanan kesehatan terganggu,layanan terganggu,kekurangan tenaga kesehatan"
+"LU.R,S,T,U","jasa hiburan,kegiatan rekreasi,jasa perorangan,pelukis,hiburan,wisata,tradisi,wahana,karaoke,alun,fest,festival,pesta,expo,fair,pawai,konser,artis,galeri,event",,,
+EXP.1,"konsumsi rumah tangga,daya beli rumah tangga,belanja masyarakat",,"konsumsi rumah tangga tumbuh,daya beli meningkat,konsumsi meningkat","konsumsi rumah tangga turun,daya beli turun,konsumsi menurun"
+EXP.1.a,"belanja bahan makanan,konsumsi makanan rumah tangga,harga bahan pangan,cabai,cabe,rawit,ayam,bawang,baput,bamer,telur,sembako,rokok,bir,wine,cukai,tembakau,kretek,sigaret,alkohol,miras,arak,ciu,konsumsi pangan,belanja pangan",,,
+EXP.1.b,"belanja pakaian,pengeluaran alas kaki,baju,celana,kemeja,kaus,jaket,sepatu,sandal,topi,tas,kain,garmen,tekstil,butik,konveksi,seragam,thrifting,thrift,fashion,alas kaki,jasa perawatan pakaian","makanan,minuman",,
+EXP.1.c,"biaya sewa rumah,belanja perabot rumah tangga,biaya listrik rumah tangga,sewa,kontrakan,listrik,pdam,pln,lpg,bbm,kayu,tarif,token,tagihan,aliran,saluran,UP3,pemadaman,dipadamkan,PBB-P2,pajak bumi,kasur,meja,kursi,lemari,kulkas,kipas,sapu,pel,deterjen,sabun,perabot,mebel,panci,furnitur,furniture,perabotan rumah,sofa,perlengkapan rumah tangga,utilitas rumah tangga","hotel,apartemen,beras",,
+EXP.1.d,"biaya kesehatan dan pendidikan,pengeluaran pendidikan,pengeluaran kesehatan,obat,vitamin,dokter,rumah sakit,puskesmas,klinik,perawat,bidan,resep,vaksin,apotek,medis,sehat,bpjs,kesehatan,pbi,pbd,pbid,vaksinasi,dinkes,dinas kesehatan,cek kesehatan,ckg,stunting,mbg,sppg,gizi,bergizi,spp,sekolah,sd,smp,sma,kampus,kuliah,bimbel,kursus,buku,seragam,ijazah,pendaftaran,ukt,mahasiswa,spmb,penerimaan siswa,seragam sekolah,les,universitas,sbmptn,kurikulum,pmb,mapel,bos,pagu,ptn,sdn,smpn,sman,mi,mts,wisuda,dikbud,pendidikan,belanja kesehatan,belanja pendidikan","dukun,alternatif,wisata,rekreasi",,
+EXP.1.e,"pengeluaran transportasi,belanja pulsa,biaya komunikasi rumah tangga,bus,bis,angkot,taksi,damri,terminal,ojek,ojol,logistik,truk,sopir,travel,angkutan,trayek,kendaraan,bensin,solar,mudik,penumpang,kereta,telkom,provider,internet,seluler,penyiaran,televisi,radio,film,studio,software,programmer,kuota,wifi,telkomsel,fiber,telpon,telepon,hp,handphone,smartphone,indosat,biaya transportasi,biaya telekomunikasi","pln,pdam,bbm,listrik",,
+EXP.1.f,"belanja restoran dan hotel,pengeluaran hotel,pengeluaran restoran,restoran,kafe,warung,hotel,penginapan,villa,kos,katering,menu,chef,pesanan,kamar,okupansi,resto,konsumsi restoran,konsumsi hotel","beras,pasar,pdam",,
+EXP.1.g,"pengeluaran rekreasi rumah tangga,konsumsi rumah tangga lainnya,bioskop,tiket,konser,taman,buku,majalah,koran,tulis,mainan,olahraga,hobi,kamera,outing,pemandian,bakat,budaya,fest,festival,fair,kreativitas,exchange,pariwisata,event,kreatif,wisata,wisatawan,alun,kompetisi,pesta,expo,galeri,hiburan,wahana,sampo,odol,cukur,salon,spa,jam,perhiasan,tas,koper,asuransi,payung,dompet,kosmetik,parfum,sisir,emas,belanja rekreasi,jasa perorangan","pesawat,hotel,baju,celana",,
+EXP.2,"konsumsi lnprt,belanja organisasi nirlaba,pengeluaran lembaga nonprofit,dpc,kelenteng,gereja,masjid,pemuda,katolik,ldii,muhammadiyah,gow,banser,ansor,gp-ansor,parpol,koni,kader,baznas,zakat,panti,yayasan,lsm,ormas,serikat,sumbangan,donasi,lnprt,lembaga nirlaba,organisasi nonprofit","pemerintah,apbn",,
+EXP.3,"konsumsi pemerintah,belanja barang dan jasa pemerintah,belanja pemerintah,konsumsi pemerintah daerah",,"belanja pemerintah meningkat,realisasi belanja meningkat,belanja dipercepat","belanja pemerintah turun,realisasi belanja turun,pemotongan anggaran"
+EXP.3.a,"konsumsi kolektif pemerintah,layanan publik kolektif,apbd,kontraktor,gedung,tukang,jembatan,infrastruktur,perumahan,bangunan,renovasi,revitalisasi,aspal,diaspal,rapat paripurna,dprd,pelayanan publik,infrastruktur publik","panti,lsm",,
+EXP.3.b,"konsumsi individu pemerintah,layanan individu pemerintah,subsidi,bpjs,pendidikan,kesehatan,bansos,blt,beasiswa,gaji pns,gaji asn,gaji p3k,gaji ppk,tpp,pns,asn,p3k,pppk,tunjangan,mbg,sppg,bergizi,gizi,pbi,pbid,bpnt,apbd,spp,mobil dinas,motor dinas,layanan kesehatan pemerintah,layanan pendidikan pemerintah","swasta,yayasan",,
+EXP.4,"pembentukan modal tetap bruto,realisasi investasi,investasi tetap,penanaman modal",,"realisasi investasi meningkat,investasi meningkat,proyek investasi baru","investasi menurun,investasi tertunda"
+EXP.4.a,"investasi bangunan,pembangunan hotel baru,proyek gedung baru,gedung,pabrik,jalan,jembatan,bandara,pelabuhan,konstruksi,kontraktor,tol,semen,bata,beton,infrastruktur,perbaikan jalan,perumahan,arsitektur,bangunan,renovasi,revitalisasi,tbm,bale,aspal,diaspal,bangunan baru,investasi konstruksi","makanan,pulsa",pembangunan dimulai,pembangunan tertunda
+EXP.4.b,"investasi mesin,pembelian mesin produksi,mesin,alat berat,peralatan,modernisasi,upgrade,ekspansi,mesin produksi,perlengkapan produksi",,,
+EXP.4.c,"investasi kendaraan,pembelian kendaraan operasional,mobil dinas,motor dinas,armada,truk,kendaraan operasional,armada usaha",,,
+EXP.4.d,"investasi peralatan,pembelian peralatan usaha,server,komputer,peralatan,peralatan kantor,peralatan usaha",,,
+EXP.4.e,"ternak pembiakan,tanaman menghasilkan,cultivated biological resources,ternak produktif,tanaman tahunan produktif",,,
+EXP.4.f,"investasi perangkat lunak,produk kekayaan intelektual,hasil penelitian dikapitalisasi,hak cipta,paten,riset dan pengembangan",,,
+EXP.5,"perubahan inventori,stok barang meningkat,penumpukan persediaan,stok,gudang,persediaan,inventaris,sisa barang,bahan baku,cadangan,bulog,simpanan,pasokan,surplus,tumpuk,simpan,bapok,bahan pokok,swasembada,stok gudang,persediaan barang",konsumsi,persediaan meningkat,persediaan menurun
+EXP.6,"ekspor barang dan jasa,nilai ekspor,ekspor,eksportir,bea cukai,penjualan ke luar negeri","impor,domestik",ekspor meningkat,ekspor menurun
+EXP.6.a,"ekspor barang,komoditas ekspor,barang ekspor",,,
+EXP.6.a.1,"ekspor nonmigas,ekspor komoditas nonmigas,komoditas nonmigas,ekspor pertanian",,,
+EXP.6.a.2,"ekspor migas,ekspor minyak dan gas,minyak mentah ekspor,gas alam ekspor",,,
+EXP.6.b,"ekspor jasa,pendapatan jasa dari luar negeri,wisatawan mancanegara,jasa internasional",,,
+EXP.7,"impor barang dan jasa,nilai impor,impor,importir,bea cukai,pembelian dari luar negeri","ekspor,domestik",impor menurun,impor meningkat
+EXP.7.a,"impor barang,barang impor,komoditas impor",,,
+EXP.7.a.1,"impor nonmigas,impor komoditas nonmigas,mesin impor,pangan impor",,,
+EXP.7.a.2,"impor migas,impor minyak dan gas,minyak mentah impor,gas alam impor",,,
+EXP.7.b,"impor jasa,pembayaran jasa ke luar negeri,jasa asing,pembayaran jasa luar negeri",,,

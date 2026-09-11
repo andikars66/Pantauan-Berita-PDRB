@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+import hashlib
+from time import monotonic
 import os
 from pathlib import Path
 
@@ -16,6 +18,7 @@ from src.config_loader import (
 from src.date_utils import available_quarters, quarter_bounds, today_wita, year_options
 from src.exporter import build_main_excel, build_raw_excel
 from src.pipeline import run_pipeline
+from src.serper_client import fetch_serper_credits
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -153,6 +156,17 @@ def get_serper_keys() -> list[str]:
     if isinstance(value, str):
         return [item.strip() for item in value.split(",") if item.strip()]
     return [str(item).strip() for item in value if str(item).strip()]
+
+
+def get_credit_summary(keys: list[str]) -> dict:
+    # Session-local cache stores only a fingerprint and aggregate, never API keys.
+    fingerprint = hashlib.sha256("\0".join(sorted(set(keys))).encode()).hexdigest()
+    cached = st.session_state.get("serper_credit_summary")
+    if cached is None or cached[0] != fingerprint or monotonic() - cached[1] >= 300:
+        summary = fetch_serper_credits(keys)
+        cached = (fingerprint, monotonic(), summary)
+        st.session_state["serper_credit_summary"] = cached
+    return cached[2]
 
 
 def taxonomy_label(code: str, config: AppConfig) -> str:
@@ -368,7 +382,9 @@ def app() -> None:
         st.error(f"Konfigurasi tidak valid: {exc}")
         st.stop()
 
-    key_status = "SERPER READY" if get_serper_keys() else "PORTAL MODE"
+    credits = get_credit_summary(get_serper_keys())
+    credit_value = f'{credits["total"]:,}' if credits["total"] is not None else "Tidak tersedia"
+    key_status = f"Credits left: {credit_value}"
     st.markdown(
         f"""
         <div class="hero-card">
@@ -387,6 +403,10 @@ def app() -> None:
         unsafe_allow_html=True,
     )
 
+    if credits["total"] is None:
+        st.caption(f'Sisa kredit belum lengkap: {credits["checked_keys"]}/{credits["configured_keys"]} key berhasil diperiksa.')
+    elif not credits["configured_keys"]:
+        st.caption("API key Serper belum dikonfigurasi.")
     today = today_wita()
     period_options = [
         (year, quarter)
@@ -408,6 +428,18 @@ def app() -> None:
         with exp_column:
             exp = render_taxonomy_dropdown("EXP", "Pengeluaran", "🛒", config)
 
+        st.markdown("**Sumber berita**")
+        source_options = [("serper", "Serper")] + [
+            (row.id, row.name) for row in config.portals[config.portals["active"]].itertuples()
+        ]
+        source_columns = st.columns(3)
+        selected_sources = []
+        for index, (source_id, source_name) in enumerate(source_options):
+            if source_columns[index % 3].checkbox(source_name, value=True, key=f"source_{source_id}"):
+                selected_sources.append(source_id)
+        if not selected_sources:
+            st.caption("Pilih minimal satu sumber berita untuk memulai.")
+
         start_date, end_date = quarter_bounds(year, quarter, today)
         selected = lu + exp
         st.markdown(
@@ -418,7 +450,7 @@ def app() -> None:
         _, run_column, _ = st.columns([1, .52, 1])
         with run_column:
             started = st.button(
-                "🔎 Mulai Pencarian", type="primary", disabled=not selected,
+                "🔎 Mulai Pencarian", type="primary", disabled=not selected or not selected_sources,
                 use_container_width=True, key="run_button",
             )
 
@@ -436,6 +468,7 @@ def app() -> None:
         try:
             st.session_state["run_result"] = run_pipeline(
                 year, quarter, selected, config, get_serper_keys(), today, progress,
+                selected_sources=selected_sources,
             )
         except Exception:
             logging.getLogger(__name__).exception("Fatal pipeline error")
@@ -443,11 +476,15 @@ def app() -> None:
         finally:
             status_text.empty()
             progress_bar.empty()
+        if "serper" in selected_sources:
+            st.session_state.pop("serper_credit_summary", None)
+            if "run_result" in st.session_state:
+                st.rerun()
 
     if "run_result" in st.session_state:
         render_results(st.session_state["run_result"])
     else:
-        st.info("Pilih periode dan minimal satu kategori, lalu mulai pencarian.", icon="💡")
+        st.info("Pilih periode, minimal satu kategori dan sumber berita, lalu mulai pencarian.", icon="💡")
 
 
 if __name__ == "__main__":
