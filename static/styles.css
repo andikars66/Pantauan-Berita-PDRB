@@ -18,11 +18,11 @@
     --font-ui: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 [data-testid="stAppViewContainer"] {
-    background: var(--neutral-background);
+    background: var(--soft-peach);
     color: var(--text-primary);
     font-family: var(--font-ui);
 }
-[data-testid="stHeader"] { background: var(--neutral-background); }
+[data-testid="stHeader"] { background: var(--soft-peach); }
 .block-container { max-width: 1120px; padding: 4rem 2rem 3rem; }
 h1, h2, h3, p, label, button, input, textarea, select {
     font-family: var(--font-ui);
@@ -30,7 +30,9 @@ h1, h2, h3, p, label, button, input, textarea, select {
 .product-header {
     display: flex; align-items: flex-start; justify-content: space-between;
     gap: 24px; padding: 8px 0 8px 24px; margin: 8px 0 24px;
-    border-left: 4px solid var(--primary);
+    border-left: 6px solid var(--primary);
+    background: var(--cream);
+    border-radius: 0 12px 12px 0;
 }
 .product-header h1 {
     margin: 0; padding: 0; font-size: 32px; line-height: 1.25;
@@ -41,8 +43,8 @@ h1, h2, h3, p, label, button, input, textarea, select {
     line-height: 1.6; color: var(--text-on-neutral);
 }
 .credit-badge {
-    flex-shrink: 0; padding: 8px 12px; margin-top: 4px;
-    background: var(--surface); border: 1px solid var(--border);
+    flex-shrink: 0; padding: 8px 12px; margin: 4px 20px 0 0;
+    background: var(--surface); border: 1px solid #E8C5A8;
     border-radius: 8px; font-size: 14px; font-weight: 600;
 }
 .credit-ok { color: var(--success); }
@@ -50,6 +52,7 @@ h1, h2, h3, p, label, button, input, textarea, select {
 .st-key-parameter_panel {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 12px; padding: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.075);
 }
 [data-testid="stMarkdownContainer"] h2.panel-heading {
     margin: 0 0 8px; padding: 0; font-size: 18px; font-weight: 650; line-height: 1.5;
@@ -74,20 +77,33 @@ h1, h2, h3, p, label, button, input, textarea, select {
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: var(--text-on-neutral); }
 [data-baseweb="select"] > div,
 [data-baseweb="input"], [data-baseweb="textarea"] {
-    background: var(--surface); border-color: var(--border); border-radius: 8px;
+    background: var(--cream); border-color: #D9A477; border-radius: 8px;
 }
-[data-testid="stPopover"] > button,
+[data-testid="stPopoverButton"] {
+    width: 100%; min-height: 40px; padding: 0 12px;
+    justify-content: space-between; text-align: left;
+    font-weight: 500;
+}
+[data-testid="stPopoverButton"],
 [data-testid="stBaseButton-secondary"], [data-testid="stBaseButton-secondaryFormSubmit"],
 [data-testid="stDownloadButton"] button {
-    background: var(--surface); color: var(--text-primary);
-    border: 1px solid var(--border); border-radius: 8px; box-shadow: none;
+    background: var(--cream); color: var(--text-primary);
+    border: 1px solid #D9A477; border-radius: 8px; box-shadow: none;
     min-height: 40px; font-weight: 500;
 }
-[data-testid="stPopover"] > button:hover,
+[data-testid="stDownloadButton"] button {
+    background: var(--primary); color: var(--text-on-action);
+    border-color: var(--primary); font-weight: 650;
+}
+[data-testid="stPopoverButton"]:hover,
 [data-testid="stBaseButton-secondary"]:hover,
 [data-testid="stDownloadButton"] button:hover {
-    background: var(--neutral-background); border-color: var(--text-secondary);
+    background: var(--soft-peach); border-color: var(--primary);
     color: var(--text-primary);
+}
+[data-testid="stDownloadButton"] button:hover {
+    background: var(--primary-hover); color: var(--text-on-action);
+    border-color: var(--primary-hover);
 }
 .st-key-run_button button {
     min-height: 44px; border-radius: 8px; font-weight: 650;
@@ -102,16 +118,24 @@ h1, h2, h3, p, label, button, input, textarea, select {
     background: var(--neutral-background); color: var(--text-secondary);
     border-color: var(--border); cursor: not-allowed; opacity: 1;
 }
-button:focus-visible, a:focus-visible, input:focus-visible, [role="tab"]:focus-visible,
-[data-testid="stCheckbox"]:focus-within, [data-baseweb="select"]:focus-within {
-    outline: 2px solid var(--text-primary) !important; outline-offset: 3px;
+*, *::before, *::after,
+*:focus, *:focus-visible, *::before:focus, *::after:focus {
+    outline: none !important;
     box-shadow: none !important;
 }
 [data-testid="stCheckbox"] { padding: 4px 0; }
+[data-testid="stCheckbox"] label:hover { color: var(--primary-hover); }
 [data-testid="stTabs"] [role="tab"] { font-weight: 600; color: var(--text-secondary); }
 [data-testid="stTabs"] [role="tab"][aria-selected="true"] { color: var(--text-primary); }
 [data-testid="stTabs"] [role="tablist"] { gap: 24px; overflow-x: auto; }
 [data-testid="stDataFrame"] { max-width: 100%; border-radius: 8px; }
+[data-testid="stDataFrame"] [role="columnheader"],
+[data-testid="stDataFrame"] th,
+[data-testid="stDataFrame"] thead,
+[data-testid="stDataFrame"] thead * {
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
 [data-baseweb="tag"] { background: var(--cream); color: var(--text-primary); border-radius: 4px; }
 hr { border-color: var(--border); }
 @media (max-width: 760px) {
@@ -119,16 +143,25 @@ hr { border-color: var(--border); }
     .product-header { flex-direction: column; gap: 16px; padding-left: 16px; margin-bottom: 16px; }
     .product-header h1 { font-size: 28px; }
     .product-header p { font-size: 14px; }
-    .credit-badge { margin: 0; }
+    .credit-badge { margin: 8px 20px 0 0; }
     .st-key-parameter_panel { padding: 16px; }
+    [data-testid="stPopoverBody"] {
+        width: calc(100vw - 64px);
+        max-width: calc(100vw - 64px);
+    }
     [data-testid="stMetric"] { min-height: 88px; padding: 16px; }
     [data-testid="stTabs"] [role="tablist"] { gap: 16px; }
 }
 
 [data-testid="stPopoverBody"] {
-    background: var(--surface); border: 1px solid var(--border);
+    width: 380px; max-width: calc(100vw - 32px); box-sizing: border-box;
+    background: var(--cream); border: 1px solid #D9A477;
     border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.075);
-    max-width: calc(100vw - 32px);
+}
+[data-testid="stPopoverBody"] > div { background: var(--cream); }
+[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div:focus {
+    outline: none !important; box-shadow: none !important;
 }
 [data-testid="stAlertContainer"] {
     background: var(--surface); border: 1px solid var(--border);
