@@ -79,6 +79,20 @@ h1, h2, h3, p, label, button, input, textarea, select {
 [data-baseweb="input"], [data-baseweb="textarea"] {
     background: var(--cream); border-color: #D9A477; border-radius: 8px;
 }
+[data-testid="stSelectbox"] .react-aria-ComboBox > [role="group"] {
+    background: var(--cream) !important;
+    border: 1px solid #D9A477 !important;
+    border-radius: 8px !important;
+    min-height: 40px;
+}
+[data-testid="stSelectbox"] .react-aria-ComboBox > [role="group"] input {
+    color: var(--text-primary) !important;
+}
+[data-testid="stSelectbox"] .react-aria-ComboBox > [role="group"] button {
+    color: var(--text-primary) !important;
+    background: transparent !important;
+    border: 0 !important;
+}
 [data-testid="stPopoverButton"] {
     width: 100%; min-height: 40px; padding: 0 12px;
     justify-content: space-between; text-align: left;
@@ -162,6 +176,10 @@ hr { border-color: var(--border); }
 [data-testid="stSelectbox"] [data-baseweb="select"]:focus-within,
 [data-testid="stSelectbox"] [data-baseweb="select"] > div:focus {
     outline: none !important; box-shadow: none !important;
+}
+[data-testid="stSelectbox"] .react-aria-ComboBox > [role="group"]:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
 }
 [data-testid="stAlertContainer"] {
     background: var(--surface); border: 1px solid var(--border);
