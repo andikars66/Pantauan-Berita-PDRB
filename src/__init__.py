@@ -1,1 +1,1 @@
-"""Pantauan Berita PDRB application package."""
+"""Tukang Koran application package."""

@@ -16,9 +16,11 @@ def mock_credit_lookup(monkeypatch):
 def test_compact_period_and_hierarchical_taxonomy_ui():
     app = AppTest.from_file(Path(__file__).parents[1] / "app.py").run(timeout=30)
     assert not app.exception
+    assert any("<h1>Tukang Koran</h1>" in item.value for item in app.markdown)
+    assert any("Telusur Kabar Aktivitas Ekonomi Regional — Koleksi, Kategorisasi, dan Analisis PDRB" in item.value for item in app.markdown)
     assert len(app.selectbox) == 1
     assert len(app.checkbox) == 98
-    assert app.button[-1].label == "🔎 Mulai Pencarian"
+    assert app.button[-1].label == "Mulai Pencarian"
     assert app.button[-1].disabled
 
     app.checkbox[1].check()
@@ -84,9 +86,9 @@ def test_result_ui_has_cards_tabs_and_split_dimension_tables():
     assert len(app.multiselect) == 4
     download_labels = [button.label for button in app.get("download_button")]
     assert download_labels == [
-        "⬇️ Download Lapangan Usaha",
-        "⬇️ Download Pengeluaran",
-        "⬇️ Download Raw Result",
+        "Download Lapangan Usaha",
+        "Download Pengeluaran",
+        "Download Raw Result",
     ]
 
 

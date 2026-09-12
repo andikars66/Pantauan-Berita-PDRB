@@ -48,7 +48,7 @@ def build_main_excel(result: dict[str, Any], dimension: str | None = None) -> By
     summary_sheet = workbook.active
     summary_sheet.title = "Ringkasan"
     metadata = result["metadata"]
-    summary_sheet.append(["Ringkasan Pantauan Berita PDRB"])
+    summary_sheet.append(["Ringkasan Tukang Koran"])
     summary_sheet["A1"].font = Font(bold=True, size=14)
     summary_sheet.append(["Periode", f'{metadata["year"]} T{metadata["quarter"]}'])
     summary_sheet.append(["Rentang", f'{metadata["start_date"]:%d-%m-%Y} s.d. {metadata["end_date"]:%d-%m-%Y}'])

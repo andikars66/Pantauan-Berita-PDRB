@@ -1,4 +1,6 @@
-# Pantauan Berita PDRB Lombok Tengah
+# Tukang Koran
+
+**Telusur Kabar Aktivitas Ekonomi Regional — Koleksi, Kategorisasi, dan Analisis PDRB**
 
 Aplikasi Streamlit satu halaman untuk mengumpulkan berita dari Serper, Inside Lombok, Lombok Post, Radar Mandalika, Radar Lombok, Suara NTB, dan Pemkab Lombok Tengah, lalu mengklasifikasikannya secara rule-based ke taxonomy PDRB Lapangan Usaha dan Pengeluaran. Hasil hanya disimpan dalam session aktif dan dapat diunduh sebagai dua file Excel.
 
@@ -83,6 +85,10 @@ Penambahan portal, delimiter koma, dan pengumpulan paralel mengikuti permintaan 
 
 ## Sumber berita dan sisa kredit
 
-Blok **PARAMETER PENCARIAN** menyediakan checkbox **Sumber berita** untuk Serper dan setiap portal aktif. Semua dicentang secara default. Minimal satu sumber dan satu kategori harus dipilih. Hanya sumber terpilih yang dikumpulkan dan masuk diagnostics; jika Serper tidak dipilih, tidak ada query pencarian Serper yang dibuat atau dikirim. Pemeriksaan saldo akun untuk tag tetap dilakukan terpisah.
+Blok **Parameter pencarian** menyediakan checkbox **Sumber berita** untuk Serper dan setiap portal aktif. Semua dicentang secara default. Minimal satu sumber dan satu kategori harus dipilih. Hanya sumber terpilih yang dikumpulkan dan masuk diagnostics; jika Serper tidak dipilih, tidak ada query pencarian Serper yang dibuat atau dikirim. Pemeriksaan saldo akun untuk tag tetap dilakukan terpisah.
 
 Tag **Credits left** menjumlahkan `balance` dari `GET https://google.serper.dev/account` untuk seluruh API key berbeda yang dikonfigurasi (key identik yang terulang dihitung sekali). Pemeriksaan memakai maksimal tiga request bersamaan, timeout terbatas, dan cache per session selama lima menit yang diperbarui pada interaksi berikutnya atau setelah pencarian Serper. Tidak ada key atau respons akun mentah yang ditampilkan/disimpan dalam cache. Jika salah satu saldo gagal diperiksa, total ditampilkan **Tidak tersedia**, disertai jumlah key yang berhasil diperiksa. Tanpa key, tag menampilkan 0 dengan keterangan konfigurasi belum tersedia. Angka merupakan saldo saat pemeriksaan terakhir, sehingga penggunaan dari aplikasi lain dapat membuatnya berubah.
+
+## Tampilan
+
+Tukang Koran menggunakan panel putih di atas latar netral, aksen oranye solid, dan font sistem tanpa unduhan font. Token warna dan CSS responsif dipusatkan di `static/styles.css`; `.streamlit/config.toml` mencerminkan warna dasar untuk widget dan tabel bawaan Streamlit. Layout maksimum 1120 px; layar kecil menyusun kolom secara vertikal dan tabel tetap dapat digeser horizontal. Outline gelap menandai keyboard focus. Teks tombol utama memakai warna gelap agar kontras di atas oranye tetap terbaca.
